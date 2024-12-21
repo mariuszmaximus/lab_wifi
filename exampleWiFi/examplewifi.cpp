@@ -14,7 +14,12 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     tableView.resize(800, 600);
     tableView.show();
 
-
+    // Ustaw szerokości kolumn
+    tableView.setColumnWidth(0, 250); // SSID
+    tableView.setColumnWidth(1, 150); // BSSID
+    tableView.setColumnWidth(2, 80);  // Frequency
+    tableView.setColumnWidth(3, 80);  // Signal Level
+    tableView.setColumnWidth(4, 400); // Flags
 
     QObject::connect(&wifiscanner, &WiFi::WifiScanner::networksUpdated, [this]() {
         model.setNetworks(wifiscanner.getNetworks());

@@ -41,18 +41,25 @@ public:
         }
     }
 
+    // QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override {
+    //     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+    //         switch (section) {
+    //         case 0: return "SSID";
+    //         case 1: return "BSSID";
+    //         case 2: return "Frequency";
+    //         case 3: return "Signal Level";
+    //         case 4: return "Flags";
+    //         default: return QVariant();
+    //         }
+    //     }
+    //     return QVariant();
+    // }
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override {
-        if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
-            switch (section) {
-            case 0: return "SSID";
-            case 1: return "BSSID";
-            case 2: return "Frequency";
-            case 3: return "Signal Level";
-            case 4: return "Flags";
-            default: return QVariant();
-            }
-        }
-        return QVariant();
+        if (role != Qt::DisplayRole || orientation != Qt::Horizontal)
+            return QVariant();
+
+        static QStringList headers = {"SSID", "BSSID", "Frequency", "Signal Level", "Flags"};
+        return headers.at(section);
     }
 
 private:
