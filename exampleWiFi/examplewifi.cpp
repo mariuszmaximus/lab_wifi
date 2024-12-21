@@ -15,6 +15,7 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // checkBox = new QCheckBox("Enable Feature", this);
 
     wiFiSwitch = new WiFiSwitch( this);
+    wiFiSwitch->setFixedHeight(60);
     // wiFiSwitch->move(100,0);
 
 

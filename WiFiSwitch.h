@@ -12,15 +12,16 @@ public:
           mCheckedColor("#2196F3"),  // Niebieski kolor tła, gdy przełącznik jest włączony
           mUncheckedColor("#BDBDBD"),  // Szary kolor tła, gdy przełącznik jest wyłączony
           mThumbColor("#FFFFFF"),  // Biały kolor "guzika" (przycisk)
-          guzikSize(18) {  // Domyślna średnica guzika
-        setCursor(Qt::PointingHandCursor);  // Ustawia kursor w stylu "ręki" przy najechaniu
-        resizeWidget();  // Dostosuj wymiary widgetu do rozmiaru guzika
+          mMargin(4) {  // Domyślny margines
+        setCursor(Qt::PointingHandCursor);  // Kursor w stylu "ręki"
+        setFixedHeight(40);  // Domyślna wysokość widgetu
+        resizeWidget();  // Przelicz szerokość widgetu na podstawie wysokości i marginesu
     }
 
-    // Funkcja do ustawiania rozmiaru guzika
-    void setGuzikSize(int size) {
-        guzikSize = size;
-        resizeWidget();  // Przelicz wymiary na podstawie nowego rozmiaru guzika
+    // Funkcja do ustawiania marginesu
+    void setMargin(int margin) {
+        mMargin = margin;
+        resizeWidget();  // Przelicz wymiary na podstawie nowego marginesu
         update();  // Odśwież wygląd widgetu
     }
 
@@ -32,21 +33,23 @@ protected:
         // Włącz gładkie krawędzie
         painter.setRenderHint(QPainter::Antialiasing);
 
-        // Oblicz dynamiczne wymiary toru
-        int trackHeight = guzikSize+4;// / 2;  // Wysokość toru to połowa średnicy guzika
-        int trackWidth = width() - guzikSize;  // Szerokość toru zależy od szerokości widgetu
-        int trackY = (height() - trackHeight) / 2;  // Środek toru w pionie
-        QRect trackRect(guzikSize / 4, trackY, trackWidth, trackHeight);
+        // Rozmiar guzika obliczany na podstawie wysokości i marginesu
+        int thumbSize = height() - 2 * mMargin;
+
+        // Oblicz wymiary toru (tła)
+        int trackHeight = height();
+        int trackWidth = width();
+        QRect trackRect(0, 0, trackWidth, trackHeight);
 
         // Rysowanie tła (toru)
-        painter.setBrush(isChecked() ? mCheckedColor : mUncheckedColor);  // Kolor tła zależny od stanu
+        painter.setBrush(isChecked() ? mCheckedColor : mUncheckedColor);  // Kolor zależny od stanu
         painter.setPen(Qt::NoPen);  // Bez obramowania
         painter.drawRoundedRect(trackRect, trackHeight / 2, trackHeight / 2);
 
         // Oblicz pozycję guzika
-        int thumbX = isChecked() ? (width() - guzikSize - guzikSize / 4) : guzikSize / 4;
-        int thumbY = (height() - guzikSize) / 2;
-        QRect thumbRect(thumbX, thumbY, guzikSize, guzikSize);
+        int thumbX = isChecked() ? (width() - thumbSize - mMargin) : mMargin;
+        int thumbY = mMargin;
+        QRect thumbRect(thumbX, thumbY, thumbSize, thumbSize);
 
         // Rysowanie guzika
         painter.setBrush(mThumbColor);
@@ -55,14 +58,14 @@ protected:
 
 private:
     void resizeWidget() {
-        int widgetHeight = guzikSize + guzikSize / 4;  // Wysokość widgetu zależy od rozmiaru guzika
-        int widgetWidth = guzikSize * 3;  // Szerokość widgetu to 3 razy średnica guzika
-        setFixedSize(widgetWidth, widgetHeight);  // Ustaw wymiary widgetu
+        // Szerokość widgetu obliczana na podstawie wysokości i marginesu
+        int widgetWidth = height() * 3;  // Szerokość to 3x wysokość widgetu
+        setFixedWidth(widgetWidth);  // Ustaw szerokość widgetu
     }
 
 private:
     QColor mCheckedColor;    // Kolor tła, gdy przełącznik jest włączony
     QColor mUncheckedColor;  // Kolor tła, gdy przełącznik jest wyłączony
     QColor mThumbColor;      // Kolor przycisku (guzika)
-    int guzikSize;           // Średnica guzika
+    int mMargin;             // Margines wokół guzika
 };
