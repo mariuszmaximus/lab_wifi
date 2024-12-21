@@ -3,7 +3,7 @@
 #include "WifiDelegate.h"
 
 #include <QVBoxLayout>
-#include <QCheckBox>
+#include "WiFiSwitch.h"
 
 ExampleWifi::ExampleWifi(QWidget *parent)
     : QWidget(parent)
@@ -12,7 +12,11 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     ui->setupUi(this);
 
     // Tworzenie widgetów
-    checkBox = new QCheckBox("Enable Feature", this);
+    // checkBox = new QCheckBox("Enable Feature", this);
+
+    wiFiSwitch = new WiFiSwitch( this);
+    // wiFiSwitch->move(100,0);
+
 
     // Tworzenie layoutu
     auto* layout = new QVBoxLayout(this);
@@ -20,7 +24,8 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // Górny widget z checkboxem (stała wysokość 66 px)
     auto* topWidget = new QWidget(this);
     auto* topLayout = new QVBoxLayout(topWidget);
-    topLayout->addWidget(checkBox);
+    // topLayout->addWidget(checkBox);
+    topLayout->addWidget(wiFiSwitch);
     topLayout->setContentsMargins(0, 0, 0, 0);
     topWidget->setLayout(topLayout);
     topWidget->setFixedHeight(66);
@@ -53,6 +58,9 @@ ExampleWifi::ExampleWifi(QWidget *parent)
 
     // Ustawienie, aby zaznaczać całe wiersze
     tableView.setSelectionBehavior(QAbstractItemView::SelectRows);
+
+
+    tableView.installEventFilter(this);
 
     // Opcjonalne: Ustawienie, aby można było zaznaczać tylko jeden wiersz naraz
     tableView.setSelectionMode(QAbstractItemView::SingleSelection);
@@ -94,6 +102,18 @@ ExampleWifi::~ExampleWifi()
     delete ui;
 }
 
+bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
+    if (obj == &tableView && event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_G) {
+            // Zmień stan checkboxa
+            // checkBox->setChecked(!checkBox->isChecked());
+            wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+            return true; // Zatrzymanie dalszego przetwarzania zdarzenia
+        }
+    }
+    return QWidget::eventFilter(obj, event); // Domyślne przetwarzanie
+}
 
 
 void ExampleWifi::keyPressEvent(QKeyEvent* event)  {
@@ -107,7 +127,8 @@ void ExampleWifi::keyPressEvent(QKeyEvent* event)  {
         }
     } else if (event->key() == Qt::Key_G) {
         // Zmień stan checkboxa
-        checkBox->setChecked(!checkBox->isChecked());
+        //checkBox->setChecked(!checkBox->isChecked());
+        wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
     } else {
         QWidget::keyPressEvent(event); // Domyślne zachowanie
     }

@@ -5,17 +5,7 @@ class WifiDelegate : public QStyledItemDelegate {
     Q_OBJECT
 
 public:
-    WifiDelegate(QObject* parent = nullptr) : QStyledItemDelegate(parent) {}
-
-    // void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
-    //     if (index.column() == 0) { // Kolumna SSID
-    //         QString ssid = index.data().toString();
-    //         if (ssid == "Kadra") {
-    //             painter->fillRect(option.rect, QColor(Qt::green)); // Zielone tło
-    //         }
-    //     }
-    //     QStyledItemDelegate::paint(painter, option, index); // Standardowe rysowanie
-    // }
+    using QStyledItemDelegate::QStyledItemDelegate;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override {
 
         if (index.isValid()) {

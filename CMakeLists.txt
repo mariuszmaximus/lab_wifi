@@ -27,6 +27,9 @@ add_library(lab_wifi
   WifiNetworkModel.h
   WifiNetworkModel.cpp  
 
+  WiFiSwitch.cpp
+  WiFiSwitch.h
+
 )
 target_link_libraries(lab_wifi Qt${QT_VERSION_MAJOR}::Core  Qt${QT_VERSION_MAJOR}::Widgets)
 target_include_directories(lab_wifi PUBLIC ./)

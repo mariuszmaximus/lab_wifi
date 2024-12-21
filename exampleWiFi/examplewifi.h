@@ -15,6 +15,7 @@ class ExampleWifi;
 QT_END_NAMESPACE
 
 class QCheckBox;
+class WiFiSwitch;
 
 class ExampleWifi : public QWidget
 {
@@ -64,12 +65,15 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
+    bool eventFilter(QObject* obj, QEvent* event) override ;
 private:
     Ui::ExampleWifi *ui;
 
     WiFi::WifiScanner wifiscanner;
     WifiNetworkModel model;
     QTableView tableView;
-    QCheckBox *checkBox;
+    // QCheckBox *checkBox; 
+    
+    WiFiSwitch *wiFiSwitch;
 };
 #endif // EXAMPLEWIFI_H
