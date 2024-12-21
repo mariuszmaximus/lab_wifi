@@ -25,7 +25,31 @@ ExampleWifi::ExampleWifi(QWidget *parent)
         model.setNetworks(wifiscanner.getNetworks());
     });
 
-    wifiscanner.startScanning();        
+
+    // auto  getSelectedSSID = [this](QTableView* tableView) -> QString 
+    // {
+    //     QModelIndex currentIndex = tableView->currentIndex();
+    //     if (!currentIndex.isValid())
+    //         return QString();
+
+    //     // Zakładamy, że kolumna SSID to 4
+    //     return currentIndex.sibling(currentIndex.row(), 4).data().toString();
+    // };
+ 
+
+    // QObject::connect(&wifiscanner, &WiFi::WifiScanner::networksUpdated, [this, getSelectedSSID ]() {
+    //     // Pobierz aktualnie zaznaczone SSID
+    //     QString selectedSSID = getSelectedSSID(&tableView);
+
+    //     // Zaktualizuj model tabeli
+    //     const auto& networks = wifiscanner.getNetworks();
+    //     WifiNetworkModel* model = new WifiNetworkModel(networks);
+    //     tableView->setModel(model);
+
+    //     // Przywróć zaznaczenie na podstawie SSID
+    //     restoreSelectionBySSID(tableView, selectedSSID);
+    // });
+    wifiscanner.startScanning();   
 }
 
 ExampleWifi::~ExampleWifi()

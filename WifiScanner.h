@@ -44,6 +44,7 @@ public:
     void startScanning() {
         qDebug() << " aaaaaaaaaaaaaaaaaaaaaaaaa startScanning " << scanInterval;
         timer.start(scanInterval);
+        scanNetworks();     
     }
 
     void stopScanning() {

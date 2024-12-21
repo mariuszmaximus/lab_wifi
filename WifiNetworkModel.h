@@ -10,14 +10,51 @@ public:
     explicit WifiNetworkModel(QObject* parent = nullptr)
         : QAbstractTableModel(parent) {}
 
-    void setNetworks(const std::vector<WiFi::RecWifiNetwork>& networks) {
-        beginResetModel();
-        this->networks = networks;
-        endResetModel();
+    // void setNetworks(const std::vector<WiFi::RecWifiNetwork>& networks) {
+    //     beginResetModel();
+    //     this->networks = networks;
+    //     endResetModel();
+    // }
+
+    void setNetworks(const std::vector<WiFi::RecWifiNetwork>& newNetworks) {
+        // this->networks = networks;
+        // Usuwanie wierszy, które już nie istnieją
+        for (int row = networks.size() - 1; row >= 0; --row) {
+            auto it = std::find_if(newNetworks.begin(), newNetworks.end(),
+                [&](const WiFi::RecWifiNetwork& net) { return net.bssid == networks[row].bssid; });
+            if (it == newNetworks.end()) {
+                beginRemoveRows(QModelIndex(), row, row);
+                networks.erase(networks.begin() + row);
+                endRemoveRows();
+            }
+        }
+
+        // Dodawanie nowych wierszy
+        for (const auto& newNet : newNetworks) {
+            auto it = std::find_if(networks.begin(), networks.end(),
+                [&](const WiFi::RecWifiNetwork& net) { return net.bssid == newNet.bssid; });
+            if (it == networks.end()) {
+                beginInsertRows(QModelIndex(), networks.size(), networks.size());
+                networks.push_back(newNet);
+                endInsertRows();
+            }
+        }
+
+        // Aktualizacja istniejących wierszy
+        for (int row = 0; row < static_cast<int>(networks.size()); ++row) {
+            const auto& newNet = newNetworks[row];
+            if (networks[row].signalLevel != newNet.signalLevel || networks[row].ssid != newNet.ssid) {
+                networks[row] = newNet;
+                emit dataChanged(index(row, 0), index(row, columnCount() - 1));
+            }
+        }
     }
+
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override {
         Q_UNUSED(parent);
+
+        if(networks.size()==0)  qDebug() << "RRRRRRRRRRRRRRRRRRRRRRRRRRRR rowcount="<<networks.size();
         return static_cast<int>(networks.size());
     }
 
