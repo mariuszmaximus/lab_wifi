@@ -1,15 +1,7 @@
-
-
-// Example usage
 #include <QCoreApplication>
-
-#include "WiFi/WifiScanner.h"
+#include <QTimer>
 #include <iostream>
-
-
-// Example usage
-#include <QCoreApplication>
-
+#include <string>
 #include "WiFi/WifiScanner.h"
 
 int main(int argc, char* argv[]) {
@@ -31,7 +23,8 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    while (true) {
+    QTimer consoleInputTimer;
+    QObject::connect(&consoleInputTimer, &QTimer::timeout, [&]() {
         std::cout << "\nOptions:\n"
                   << "1) Start scanning\n"
                   << "2) Stop scanning\n"
@@ -40,6 +33,7 @@ int main(int argc, char* argv[]) {
                   << "5) Disconnect\n"
                   << "0) Exit\n"
                   << "Choose an option: ";
+
         int option;
         std::cin >> option;
 
@@ -76,11 +70,14 @@ int main(int argc, char* argv[]) {
             std::cout << "Disconnected.\n";
             break;
         case 0:
-            return 0;
+            app.quit();
+            return;
         default:
             std::cout << "Invalid option.\n";
         }
-    }
+    });
+
+    consoleInputTimer.start(100); // Sprawdzaj konsolę co 100 ms
 
     return app.exec();
 }

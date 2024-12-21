@@ -14,10 +14,11 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
 add_executable(lab_wifi
 
+ main.cpp
+
   WiFi/WifiScanner.cpp
   WiFi/WifiScanner.h
 
-  main.cpp
 )
 target_link_libraries(lab_wifi Qt${QT_VERSION_MAJOR}::Core)
 
