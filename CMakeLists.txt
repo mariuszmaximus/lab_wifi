@@ -21,6 +21,8 @@ add_library(lab_wifi
 
   # ConsoleHandler.cpp
   # ConsoleHandler.h
+  WifiDelegate.cpp
+  WifiDelegate.h
 
   WifiNetworkModel.h
   WifiNetworkModel.cpp  

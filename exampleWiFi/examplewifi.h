@@ -14,6 +14,8 @@ class ExampleWifi;
 }
 QT_END_NAMESPACE
 
+class QCheckBox;
+
 class ExampleWifi : public QWidget
 {
     Q_OBJECT
@@ -23,47 +25,51 @@ public:
     ~ExampleWifi();
 
 
-protected:
-    void keyPressEvent(QKeyEvent* event) override {
-        switch (event->key()) {
-        case Qt::Key_A:
-            qDebug() << "Key A pressed";
-            // Obsługa klawisza A
+// protected:
+//     void keyPressEvent(QKeyEvent* event) override {
+//         switch (event->key()) {
+//         case Qt::Key_A:
+//             qDebug() << "Key A pressed";
+//             // Obsługa klawisza A
 
-            wifiscanner.startScanning();
-            break;
-        case Qt::Key_S:
-            qDebug() << "Key S pressed";
-            // Obsługa klawisza S
-            {
-                const auto& networks = wifiscanner.getNetworks();
-                qDebug() << "Networks found:";
-                for (const auto& network : networks) {
-                    qDebug() << "BSSID:" << QString::fromStdString(network.bssid)
-                             << "Frequency:" << network.frequency
-                             << "Signal Level:" << network.signalLevel
-                             << "Flags:" << QString::fromStdString(network.flags)
-                             << "SSID:" << QString::fromStdString(network.ssid);
-                }
-            } 
-            break;
-        case Qt::Key_D:
-            qDebug() << "Key D pressed";
-            // Obsługa klawisza D
-            break;
-        case Qt::Key_F:
-            qDebug() << "Key F pressed";
-            // Obsługa klawisza F
-            break;
-        default:
-            QWidget::keyPressEvent(event); // Wywołanie domyślnej obsługi
-        }
-    }
+//             wifiscanner.startScanning();
+//             break;
+//         case Qt::Key_S:
+//             qDebug() << "Key S pressed";
+//             // Obsługa klawisza S
+//             {
+//                 const auto& networks = wifiscanner.getNetworks();
+//                 qDebug() << "Networks found:";
+//                 for (const auto& network : networks) {
+//                     qDebug() << "BSSID:" << QString::fromStdString(network.bssid)
+//                              << "Frequency:" << network.frequency
+//                              << "Signal Level:" << network.signalLevel
+//                              << "Flags:" << QString::fromStdString(network.flags)
+//                              << "SSID:" << QString::fromStdString(network.ssid);
+//                 }
+//             } 
+//             break;
+//         case Qt::Key_D:
+//             qDebug() << "Key D pressed";
+//             // Obsługa klawisza D
+//             break;
+//         case Qt::Key_F:
+//             qDebug() << "Key F pressed";
+//             // Obsługa klawisza F
+//             break;
+//         default:
+//             QWidget::keyPressEvent(event); // Wywołanie domyślnej obsługi
+//         }
+//     }
+
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
 private:
     Ui::ExampleWifi *ui;
 
     WiFi::WifiScanner wifiscanner;
     WifiNetworkModel model;
     QTableView tableView;
+    QCheckBox *checkBox;
 };
 #endif // EXAMPLEWIFI_H

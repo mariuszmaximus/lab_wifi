@@ -1,5 +1,9 @@
 #include "examplewifi.h"
 #include "./ui_examplewifi.h"
+#include "WifiDelegate.h"
+
+#include <QVBoxLayout>
+#include <QCheckBox>
 
 ExampleWifi::ExampleWifi(QWidget *parent)
     : QWidget(parent)
@@ -7,12 +11,38 @@ ExampleWifi::ExampleWifi(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // Tworzenie widgetów
+    checkBox = new QCheckBox("Enable Feature", this);
+
+    // Tworzenie layoutu
+    auto* layout = new QVBoxLayout(this);
+
+    // Górny widget z checkboxem (stała wysokość 66 px)
+    auto* topWidget = new QWidget(this);
+    auto* topLayout = new QVBoxLayout(topWidget);
+    topLayout->addWidget(checkBox);
+    topLayout->setContentsMargins(0, 0, 0, 0);
+    topWidget->setLayout(topLayout);
+    topWidget->setFixedHeight(66);
+
+    // Dodawanie widgetów do głównego layoutu
+    layout->addWidget(topWidget);  // Górna część
+    layout->addWidget(&tableView);  // Dolna część (reszta przestrzeni)
+
+    // Ustawienie głównego layoutu
+    setLayout(layout);
+
     tableView.setParent(this);
 
     tableView.setModel(&model);
+
+    // Ustawienie delegata
+    auto* delegate = new WifiDelegate(this);
+    tableView.setItemDelegate(delegate);
+
     tableView.setWindowTitle("WiFi Networks");
-    tableView.resize(800, 600);
-    tableView.show();
+    // tableView.resize(800, 600);
+    // tableView.show();
 
     // Ustaw szerokości kolumn
     tableView.setColumnWidth(0, 250); // SSID
@@ -20,6 +50,13 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     tableView.setColumnWidth(2, 80);  // Frequency
     tableView.setColumnWidth(3, 80);  // Signal Level
     tableView.setColumnWidth(4, 400); // Flags
+
+    // Ustawienie, aby zaznaczać całe wiersze
+    tableView.setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    // Opcjonalne: Ustawienie, aby można było zaznaczać tylko jeden wiersz naraz
+    tableView.setSelectionMode(QAbstractItemView::SingleSelection);
+   
 
     QObject::connect(&wifiscanner, &WiFi::WifiScanner::networksUpdated, [this]() {
         model.setNetworks(wifiscanner.getNetworks());
@@ -55,4 +92,23 @@ ExampleWifi::ExampleWifi(QWidget *parent)
 ExampleWifi::~ExampleWifi()
 {
     delete ui;
+}
+
+
+
+void ExampleWifi::keyPressEvent(QKeyEvent* event)  {
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+        // Pobierz aktualnie wybrany wiersz
+        QModelIndex currentIndex = tableView.currentIndex();
+        if (currentIndex.isValid()) {
+            // Pobierz dane z kolumny SSID
+            QString ssid = tableView.model()->data(currentIndex.siblingAtColumn(0)).toString(); // Kolumna SSID
+            qDebug() << "Selected SSID:" << ssid;
+        }
+    } else if (event->key() == Qt::Key_G) {
+        // Zmień stan checkboxa
+        checkBox->setChecked(!checkBox->isChecked());
+    } else {
+        QWidget::keyPressEvent(event); // Domyślne zachowanie
+    }
 }
