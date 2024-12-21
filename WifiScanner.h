@@ -67,9 +67,9 @@ private slots:
             process.start("wpa_cli", {"scan_results"});
             process.waitForFinished();
             output = process.readAllStandardOutput();
-            qDebug() << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            qDebug() << output;
-            qDebug() << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            // qDebug() << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            // qDebug() << output;
+            // qDebug() << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         } else if (backend == NMCLI) {
             QProcess process;
             process.start("nmcli", {"-f", "BSSID,FREQ,SIGNAL,SECURITY,SSID", "dev", "wifi"});
@@ -129,42 +129,39 @@ private:
         std::istringstream stream(results);
         std::string line;
 
-        if (backend == WPA_CLI) {
-            std::regex regex("([0-9a-fA-F:]+)\\s+(\\d+)\\s+(-?\\d+)\\s+\\[(.*?)\\]\\s+(.*)");
-            std::smatch match;
+        int lineNumber = 0;
 
-            // Skip the first two lines (header information)
-            std::getline(stream, line);
-            std::getline(stream, line);
+        while (std::getline(stream, line)) {
+            lineNumber++;
 
-            while (std::getline(stream, line)) {
-                if (std::regex_match(line, match, regex)) {
-                    RecWifiNetwork network;
-                    network.bssid = match[1];
-                    network.frequency = std::stoi(match[2]);
-                    network.signalLevel = std::stoi(match[3]);
-                    network.flags = match[4];
-                    network.ssid = match[5];
-                    networks.push_back(network);
-                }
+            qDebug() << " LUNE = " << line;
+
+            // Pomijamy nagłówki (pierwsze dwie linie dla WPA_CLI)
+            if (lineNumber <= 2 && backend == WPA_CLI) {
+                continue;
             }
-        } else if (backend == NMCLI) {
-            std::regex regex("([0-9a-fA-F:]+)\\s+(\\d+)\\s+(-?\\d+)\\s+(.*?)\\s+(.*)");
-            std::smatch match;
 
-            // Skip the first line (header information)
-            std::getline(stream, line);
+            // Podziel wiersz na pola według białych znaków
+            std::istringstream lineStream(line);
+            std::vector<std::string> fields;
+            std::string field;
 
-            while (std::getline(stream, line)) {
-                if (std::regex_match(line, match, regex)) {
-                    RecWifiNetwork network;
-                    network.bssid = match[1];
-                    network.frequency = std::stoi(match[2]);
-                    network.signalLevel = std::stoi(match[3]);
-                    network.flags = match[4];
-                    network.ssid = match[5];
-                    networks.push_back(network);
-                }
+            while (lineStream >> field) {
+                fields.push_back(field);
+            }
+
+            // Sprawdzenie, czy wiersz ma wystarczającą liczbę pól
+            if (fields.size() >= 5) {
+                RecWifiNetwork network;
+                network.bssid = fields[0];
+                network.frequency = std::stoi(fields[1]);
+                network.signalLevel = std::stoi(fields[2]);
+                network.flags = fields[3];
+                network.ssid = fields[4]; // Reszta linii jako SSID (jeśli zawiera spacje, trzeba odpowiednio złożyć)
+
+                networks.push_back(network);
+            } else {
+                qDebug() << "Wiersz pominięty (za mało pól):" << QString::fromStdString(line) << " line:" << lineNumber << " " << line ;
             }
         }
     }
