@@ -10,12 +10,6 @@ public:
     explicit WifiNetworkModel(QObject* parent = nullptr)
         : QAbstractTableModel(parent) {}
 
-    // void setNetworks(const std::vector<WiFi::RecWifiNetwork>& networks) {
-    //     beginResetModel();
-    //     this->networks = networks;
-    //     endResetModel();
-    // }
-
     void setNetworks(const std::vector<WiFi::RecWifiNetwork>& newNetworks) {
         // this->networks = networks;
         // Usuwanie wierszy, które już nie istnieją
@@ -78,19 +72,6 @@ public:
         }
     }
 
-    // QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override {
-    //     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
-    //         switch (section) {
-    //         case 0: return "SSID";
-    //         case 1: return "BSSID";
-    //         case 2: return "Frequency";
-    //         case 3: return "Signal Level";
-    //         case 4: return "Flags";
-    //         default: return QVariant();
-    //         }
-    //     }
-    //     return QVariant();
-    // }
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override {
         if (role != Qt::DisplayRole || orientation != Qt::Horizontal)
             return QVariant();

@@ -135,7 +135,7 @@ private:
         while (std::getline(stream, line)) {
             lineNumber++;
 
-            qDebug() << " LUNE = " << line;
+            // qDebug() << " LUNE = " << line;
 
             // Pomijamy nagłówki (pierwsze dwie linie dla WPA_CLI)
             if (lineNumber <= 2 && backend == WPA_CLI) {

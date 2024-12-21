@@ -55,6 +55,10 @@ protected:
         painter.setBrush(mThumbColor);
         painter.drawEllipse(thumbRect);
     }
+    bool hitButton(const QPoint &pos) const override {
+        // Zawsze zwracaj true, jeśli kliknięcie mieści się w geometrii widgetu
+        return contentsRect().contains(pos);
+    }
 
 private:
     void resizeWidget() {

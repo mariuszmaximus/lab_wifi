@@ -16,16 +16,19 @@ ExampleWifi::ExampleWifi(QWidget *parent)
 
     wiFiSwitch = new WiFiSwitch( this);
     wiFiSwitch->setFixedHeight(60);
-    // wiFiSwitch->move(100,0);
-
-
+    connect(wiFiSwitch, &WiFiSwitch::toggled, this, [this](bool value){
+        if(value)
+            tableView.setModel(&model);
+        else
+            tableView.setModel(&modelEmpty);
+    });
+ 
     // Tworzenie layoutu
     auto* layout = new QVBoxLayout(this);
 
     // Górny widget z checkboxem (stała wysokość 66 px)
     auto* topWidget = new QWidget(this);
     auto* topLayout = new QVBoxLayout(topWidget);
-    // topLayout->addWidget(checkBox);
     topLayout->addWidget(wiFiSwitch);
     topLayout->setContentsMargins(0, 0, 0, 0);
     topWidget->setLayout(topLayout);
@@ -47,8 +50,6 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     tableView.setItemDelegate(delegate);
 
     tableView.setWindowTitle("WiFi Networks");
-    // tableView.resize(800, 600);
-    // tableView.show();
 
     // Ustaw szerokości kolumn
     tableView.setColumnWidth(0, 250); // SSID
@@ -60,7 +61,6 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // Ustawienie, aby zaznaczać całe wiersze
     tableView.setSelectionBehavior(QAbstractItemView::SelectRows);
 
-
     tableView.installEventFilter(this);
 
     // Opcjonalne: Ustawienie, aby można było zaznaczać tylko jeden wiersz naraz
@@ -71,30 +71,6 @@ ExampleWifi::ExampleWifi(QWidget *parent)
         model.setNetworks(wifiscanner.getNetworks());
     });
 
-
-    // auto  getSelectedSSID = [this](QTableView* tableView) -> QString 
-    // {
-    //     QModelIndex currentIndex = tableView->currentIndex();
-    //     if (!currentIndex.isValid())
-    //         return QString();
-
-    //     // Zakładamy, że kolumna SSID to 4
-    //     return currentIndex.sibling(currentIndex.row(), 4).data().toString();
-    // };
- 
-
-    // QObject::connect(&wifiscanner, &WiFi::WifiScanner::networksUpdated, [this, getSelectedSSID ]() {
-    //     // Pobierz aktualnie zaznaczone SSID
-    //     QString selectedSSID = getSelectedSSID(&tableView);
-
-    //     // Zaktualizuj model tabeli
-    //     const auto& networks = wifiscanner.getNetworks();
-    //     WifiNetworkModel* model = new WifiNetworkModel(networks);
-    //     tableView->setModel(model);
-
-    //     // Przywróć zaznaczenie na podstawie SSID
-    //     restoreSelectionBySSID(tableView, selectedSSID);
-    // });
     wifiscanner.startScanning();   
 }
 

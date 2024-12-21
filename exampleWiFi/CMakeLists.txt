@@ -65,6 +65,14 @@ install(TARGETS exampleWiFi
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+message("FFFFFFFFFFFFFFF ${CMAKE_BINARY_DIR}")
+
+# Ustawienie folderu wyjściowego dla app1
+set_target_properties(exampleWiFi PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+)
+
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(exampleWiFi)
 endif()
+
