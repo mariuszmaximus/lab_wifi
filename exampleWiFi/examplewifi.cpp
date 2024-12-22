@@ -15,7 +15,9 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // checkBox = new QCheckBox("Enable Feature", this);
 
     wiFiSwitch = new WiFiSwitch( this);
-    wiFiSwitch->setFixedHeight(60);
+    wiFiSwitch->setFixedHeight(32);
+    wiFiSwitch->setFixedWidth(32*2);
+    wiFiSwitch->setTexts("G2", "G2");
     connect(wiFiSwitch, &WiFiSwitch::toggled, this, [this](bool value){
         if(value)
             tableView.setModel(&model);

@@ -12,16 +12,22 @@ public:
           mCheckedColor("#2196F3"),  // Niebieski kolor tła, gdy przełącznik jest włączony
           mUncheckedColor("#BDBDBD"),  // Szary kolor tła, gdy przełącznik jest wyłączony
           mThumbColor("#FFFFFF"),  // Biały kolor "guzika" (przycisk)
-          mMargin(4) {  // Domyślny margines
+          mMargin(4),  // Domyślny margines
+          mTextOn("ON"),  // Tekst, gdy przełącznik jest włączony
+          mTextOff("OFF") {  // Tekst, gdy przełącznik jest wyłączony
         setCursor(Qt::PointingHandCursor);  // Kursor w stylu "ręki"
-        setFixedHeight(40);  // Domyślna wysokość widgetu
-        resizeWidget();  // Przelicz szerokość widgetu na podstawie wysokości i marginesu
     }
 
     // Funkcja do ustawiania marginesu
     void setMargin(int margin) {
         mMargin = margin;
-        resizeWidget();  // Przelicz wymiary na podstawie nowego marginesu
+        update();  // Odśwież wygląd widgetu
+    }
+
+    // Funkcja do ustawiania tekstów
+    void setTexts(const QString &textOn, const QString &textOff) {
+        mTextOn = textOn;
+        mTextOff = textOff;
         update();  // Odśwież wygląd widgetu
     }
 
@@ -29,6 +35,9 @@ protected:
     void paintEvent(QPaintEvent *event) override {
         Q_UNUSED(event);
         QPainter painter(this);
+
+
+        qDebug() << "width:"<<width() <<"   height:"<< height();
 
         // Włącz gładkie krawędzie
         painter.setRenderHint(QPainter::Antialiasing);
@@ -54,22 +63,25 @@ protected:
         // Rysowanie guzika
         painter.setBrush(mThumbColor);
         painter.drawEllipse(thumbRect);
+
+        // Rysowanie tekstu na środku guzika
+        painter.setPen(Qt::black);  // Ustaw kolor tekstu (czarny dla kontrastu)
+        painter.setFont(QFont("Arial", 10, QFont::Bold));  // Ustaw font
+        QString text = isChecked() ? mTextOn : mTextOff;  // Tekst zależny od stanu
+        painter.drawText(thumbRect, Qt::AlignCenter, text);  // Rysuj tekst na środku guzika
     }
+
     bool hitButton(const QPoint &pos) const override {
         // Zawsze zwracaj true, jeśli kliknięcie mieści się w geometrii widgetu
         return contentsRect().contains(pos);
     }
 
-private:
-    void resizeWidget() {
-        // Szerokość widgetu obliczana na podstawie wysokości i marginesu
-        int widgetWidth = height() * 3;  // Szerokość to 3x wysokość widgetu
-        setFixedWidth(widgetWidth);  // Ustaw szerokość widgetu
-    }
 
 private:
     QColor mCheckedColor;    // Kolor tła, gdy przełącznik jest włączony
     QColor mUncheckedColor;  // Kolor tła, gdy przełącznik jest wyłączony
     QColor mThumbColor;      // Kolor przycisku (guzika)
     int mMargin;             // Margines wokół guzika
+    QString mTextOn;         // Tekst, gdy przełącznik jest włączony
+    QString mTextOff;        // Tekst, gdy przełącznik jest wyłączony
 };
