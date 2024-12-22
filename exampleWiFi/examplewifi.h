@@ -36,5 +36,8 @@ private:
     WifiNetworkModel modelEmpty;
     QTableView tableView;    
     WiFiSwitch *wiFiSwitch;
+
+    bool canProcessGKey{true};
+    QTimer gKeyTimer;
 };
 #endif // EXAMPLEWIFI_H

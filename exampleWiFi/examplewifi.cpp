@@ -11,6 +11,12 @@ ExampleWifi::ExampleWifi(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // Inicjalizacja timera
+    gKeyTimer.setSingleShot(true);
+    connect(&gKeyTimer, &QTimer::timeout, this, [this]() {
+        canProcessGKey = true;  // Po upływie 3 sekund klawisz G może znowu działać
+    });
+
     // Tworzenie widgetów
     // checkBox = new QCheckBox("Enable Feature", this);
 
@@ -85,9 +91,15 @@ bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
     if (obj == &tableView && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_G) {
+            if (canProcessGKey) {
+                // Obsłuż klawisz G
+                wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+                canProcessGKey = false;  // Zablokuj reakcję na klawisz G
+                gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
+            }
             // Zmień stan checkboxa
             // checkBox->setChecked(!checkBox->isChecked());
-            wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+            // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
             return true; // Zatrzymanie dalszego przetwarzania zdarzenia
         }
     }
@@ -107,7 +119,18 @@ void ExampleWifi::keyPressEvent(QKeyEvent* event)  {
     } else if (event->key() == Qt::Key_G) {
         // Zmień stan checkboxa
         //checkBox->setChecked(!checkBox->isChecked());
-        wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+        // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+        if (canProcessGKey) {
+            // Obsłuż klawisz G
+            wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+            canProcessGKey = false;  // Zablokuj reakcję na klawisz G
+            gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
+        }
+        else
+        {
+            QWidget::keyPressEvent(event); // Domyślne zachowanie    
+        }
+
     } else {
         QWidget::keyPressEvent(event); // Domyślne zachowanie
     }
