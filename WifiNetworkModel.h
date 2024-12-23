@@ -80,6 +80,11 @@ public:
         return headers.at(section);
     }
 
+
+    const WiFi::RecWifiNetwork& getNetwork(int row) const {
+        return networks.at(row);
+    }    
+
 private:
     std::vector<WiFi::RecWifiNetwork> networks;
 };
