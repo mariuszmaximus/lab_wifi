@@ -156,7 +156,7 @@ private:
                 RecWifiNetwork network;
                 network.bssid = fields[0];
                 network.frequency = std::stoi(fields[1]);
-                network.signalLevel = std::stoi(fields[2]);
+                network.signalLevel = calculateSignalPercentage(std::stoi(fields[2]));
                 network.flags = fields[3];
                 network.ssid = fields[4]; // Reszta linii jako SSID (jeśli zawiera spacje, trzeba odpowiednio złożyć)
 
@@ -166,7 +166,15 @@ private:
             }
         }
     }
+    int calculateSignalPercentage(int signalLevel) {
+        const int minSignal = -100; // Minimalna siła sygnału (bardzo słaby)
+        const int maxSignal = -30;  // Maksymalna siła sygnału (bardzo mocny)
 
+        if (signalLevel < minSignal) signalLevel = minSignal;
+        if (signalLevel > maxSignal) signalLevel = maxSignal;
+
+        return (signalLevel - minSignal) * 100 / (maxSignal - minSignal);
+    }
     QTimer timer;
     int scanInterval;
     ScannerBackend backend;

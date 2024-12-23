@@ -37,7 +37,7 @@ protected:
         QPainter painter(this);
 
 
-        qDebug() << "width:"<<width() <<"   height:"<< height();
+        // qDebug() << "width:"<<width() <<"   height:"<< height();
 
         // Włącz gładkie krawędzie
         painter.setRenderHint(QPainter::Antialiasing);
