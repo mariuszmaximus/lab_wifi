@@ -65,7 +65,7 @@ install(TARGETS exampleWiFi
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-message("FFFFFFFFFFFFFFF ${CMAKE_BINARY_DIR}")
+message("exampleWiFi  CMAKE_BINARY_DIR  =  ${CMAKE_BINARY_DIR}")
 
 # Ustawienie folderu wyjściowego dla app1
 set_target_properties(exampleWiFi PROPERTIES

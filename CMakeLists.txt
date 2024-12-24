@@ -13,14 +13,9 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets)
 
 add_library(lab_wifi
-
- # main.cpp
-
   WifiScanner.cpp
   WifiScanner.h
 
-  # ConsoleHandler.cpp
-  # ConsoleHandler.h
   WifiDelegate.cpp
   WifiDelegate.h
 
@@ -29,7 +24,6 @@ add_library(lab_wifi
 
   WiFiSwitch.cpp
   WiFiSwitch.h
-
 )
 target_link_libraries(lab_wifi Qt${QT_VERSION_MAJOR}::Core  Qt${QT_VERSION_MAJOR}::Widgets)
 target_include_directories(lab_wifi PUBLIC ./)
@@ -42,18 +36,21 @@ install(TARGETS lab_wifi
 
 add_subdirectory(exampleWiFi)
 
+if(WIN32)
 
-# Pobranie folderu wyjściowego dla app1
-get_target_property(APP_OUTPUT_DIR exampleWiFi RUNTIME_OUTPUT_DIRECTORY)
-message("UUUUUUUUUUUUUUUUUUUUUUUU ${APP_OUTPUT_DIR}")
+    # Pobranie folderu wyjściowego dla app1
+    get_target_property(APP_OUTPUT_DIR exampleWiFi RUNTIME_OUTPUT_DIRECTORY)
+    message("UUUUUUUUUUUUUUUUUUUUUUUU ${APP_OUTPUT_DIR}")
 
-add_executable(wpa_cli wpa_cli.cpp)
-# Sprawdzenie, czy ścieżka została poprawnie pobrana
-if(APP_OUTPUT_DIR)
-    # Ustawienie folderu wyjściowego dla app2 na taki sam jak dla app1
-    set_target_properties(wpa_cli PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${APP_OUTPUT_DIR}"
-    )
-else()
-    message(FATAL_ERROR "Could not retrieve RUNTIME_OUTPUT_DIRECTORY for app1")
+    add_executable(wpa_cli wpa_cli.cpp)
+    # Sprawdzenie, czy ścieżka została poprawnie pobrana
+    if(APP_OUTPUT_DIR)
+        # Ustawienie folderu wyjściowego dla app2 na taki sam jak dla app1
+        set_target_properties(wpa_cli PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${APP_OUTPUT_DIR}"
+        )
+    else()
+        message(FATAL_ERROR "Could not retrieve RUNTIME_OUTPUT_DIRECTORY for app1")
+    endif()
+
 endif()
