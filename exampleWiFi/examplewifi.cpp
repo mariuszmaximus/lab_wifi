@@ -11,6 +11,7 @@
 
 
 #include <qabstractspinbox.h>
+#include <qnamespace.h>
 #include <qslider.h>
 #include "WiFiSwitch.h"
 #include "WiFiSwitch3state.h"
@@ -63,6 +64,10 @@ ExampleWifi::ExampleWifi(QWidget *parent)
  
 
 
+    customSlider  = new CustomSlider(this);
+    customSlider->setMinimumWidth(96);
+
+
     wiFiSwitch = new WiFiSwitch3state( this);
     wiFiSwitch->setFixedHeight(32);
     wiFiSwitch->setFixedWidth(32*3);
@@ -99,16 +104,18 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     containerLayout1->addWidget(btnConnect, 0, Qt::AlignCenter);
     containerLayout2->addWidget(btnDisConnect, 0, Qt::AlignCenter);
     containerLayout3->addWidget(btnForget, 0, Qt::AlignCenter);
+    containerLayout4->addWidget(customSlider, 0, Qt::AlignCenter);
 
 
     // {
 
     // Tworzenie etykiet
     //QLabel* label1 = new QLabel("ON / OFF WiFi");
-    QLabel* label1 = new QLabel("AP  / OFF / WiFi");
-    QLabel* label2 = new QLabel("Connect");
-    QLabel* label3 = new QLabel("Disconnect");
-    QLabel* label4 = new QLabel("Forget network");
+    QLabel* label0 = new QLabel("AP  / OFF / WiFi");
+    QLabel* label1 = new QLabel("Connect");
+    QLabel* label2 = new QLabel("Disconnect");
+    QLabel* label3 = new QLabel("Forget network");
+    QLabel* label4 = new QLabel("AP  / OFF / WiFi");
 
     horizontalSlider = new QSlider(Qt::Horizontal);
     horizontalSlider->setMinimum(-1);
@@ -158,10 +165,11 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // Tworzenie layoutu siatki
 
     // Dodawanie etykiet do pierwszego wiersza
-    layoutTopGrid->addWidget(label1,           0, 0); 
-    layoutTopGrid->addWidget(label2,           0, 1); 
+    layoutTopGrid->addWidget(label0,           0, 0); 
+    layoutTopGrid->addWidget(label1,           0, 1); 
     layoutTopGrid->addWidget(horizontalSlider, 0, 2); 
-    layoutTopGrid->addWidget(label4,           0, 3); 
+    layoutTopGrid->addWidget(label3,           0, 3); 
+    layoutTopGrid->addWidget(label4,           0, 4); 
 
     // Dodawanie przycisków do drugiego wiersza
     layoutTopGrid->addWidget(container0, 1, 0);
@@ -213,7 +221,6 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // Ustawienie, aby zaznaczać całe wiersze
     tableView.setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    tableView.installEventFilter(this);
 
     // Opcjonalne: Ustawienie, aby można było zaznaczać tylko jeden wiersz naraz
     tableView.setSelectionMode(QAbstractItemView::SingleSelection);
@@ -258,7 +265,11 @@ ExampleWifi::ExampleWifi(QWidget *parent)
             qDebug() << "SSID:" << QString::fromStdString(network.ssid);
             qDebug() << "Signal Level:" << network.signalLevel;
         }
-    });    
+    });   
+
+
+    tableView.installEventFilter(this);
+    customSlider->installEventFilter(this);
 }
 
 
@@ -291,6 +302,7 @@ bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
                 // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
                 canProcessGKey = false;  // Zablokuj reakcję na klawisz G
                 gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
+                customSlider->setFocus();
             }
             // Zmień stan checkboxa
             // checkBox->setChecked(!checkBox->isChecked());
@@ -298,49 +310,69 @@ bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
             return true; // Zatrzymanie dalszego przetwarzania zdarzenia
         }
         if (keyEvent->key() == Qt::Key_Q) {
-            wiFiSwitch->setValue(-1);
+            customSlider->setValue(-1);
             // wiFiSwitch->setvalue(-1);
             
             // wiFiSwitch->setFocus();
             // horizontalSlider->setFocus();
         }
         if (keyEvent->key() == Qt::Key_W) {
-            wiFiSwitch->setValue(0);
+            customSlider->setValue(0);
         }
         if (keyEvent->key() == Qt::Key_E) {
-            wiFiSwitch->setValue(1);
+            customSlider->setValue(1);
         }
 
     }
+
+    if (obj == customSlider && event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Return) {
+            // if (canProcessGKey) {
+            //     // Obsłuż klawisz G
+            //     // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+            //     canProcessGKey = false;  // Zablokuj reakcję na klawisz G
+            //     gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
+            //     // customSlider->setFocus();
+            // }
+            tableView.setFocus(Qt::OtherFocusReason);
+            // Zmień stan checkboxa
+            // checkBox->setChecked(!checkBox->isChecked());
+            // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+            return true; // Zatrzymanie dalszego przetwarzania zdarzenia
+        }
+
+    }        
+
     return QWidget::eventFilter(obj, event); // Domyślne przetwarzanie
 }
 
 
-void ExampleWifi::keyPressEvent(QKeyEvent* event)  {
-    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
-        // Pobierz aktualnie wybrany wiersz
-        QModelIndex currentIndex = tableView.currentIndex();
-        if (currentIndex.isValid()) {
-            // Pobierz dane z kolumny SSID
-            QString ssid = tableView.model()->data(currentIndex.siblingAtColumn(0)).toString(); // Kolumna SSID
-            qDebug() << "Selected SSID:" << ssid;
-        }
-    } else if (event->key() == Qt::Key_G) {
-        // Zmień stan checkboxa
-        //checkBox->setChecked(!checkBox->isChecked());
-        // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
-        if (canProcessGKey) {
-            // Obsłuż klawisz G
-            // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
-            canProcessGKey = false;  // Zablokuj reakcję na klawisz G
-            gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
-        }
-        else
-        {
-            QWidget::keyPressEvent(event); // Domyślne zachowanie    
-        }
+// void ExampleWifi::keyPressEvent(QKeyEvent* event)  {
+//     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+//         // Pobierz aktualnie wybrany wiersz
+//         QModelIndex currentIndex = tableView.currentIndex();
+//         if (currentIndex.isValid()) {
+//             // Pobierz dane z kolumny SSID
+//             QString ssid = tableView.model()->data(currentIndex.siblingAtColumn(0)).toString(); // Kolumna SSID
+//             qDebug() << "Selected SSID:" << ssid;
+//         }
+//     } else if (event->key() == Qt::Key_G) {
+//         // Zmień stan checkboxa
+//         //checkBox->setChecked(!checkBox->isChecked());
+//         // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+//         if (canProcessGKey) {
+//             // Obsłuż klawisz G
+//             // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+//             canProcessGKey = false;  // Zablokuj reakcję na klawisz G
+//             gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
+//         }
+//         else
+//         {
+//             QWidget::keyPressEvent(event); // Domyślne zachowanie    
+//         }
 
-    } else {
-        QWidget::keyPressEvent(event); // Domyślne zachowanie
-    }
-}
+//     } else {
+//         QWidget::keyPressEvent(event); // Domyślne zachowanie
+//     }
+// }

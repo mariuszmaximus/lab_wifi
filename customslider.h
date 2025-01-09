@@ -13,6 +13,8 @@
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOptionSlider>
+#include <QDebug>
+// #include <qglobal.h>
 
 class CustomSlider : public QSlider {
 public:
@@ -21,7 +23,36 @@ public:
             text("G2"),
             textColor(Qt::black)
     {
+        setMinimum(-1);
+        setMaximum(1);
 
+        styleStr = R"(
+            QSlider {
+                min-height: 40px; /* jak jest border to musi byc min-height = height - border*2 np. aby bylo 44 to  (44 -4 -4) = 36  */
+                max-height: 40px;
+                background: #BDBDBD;
+                border: 5px solid #BDBDBD; /* Ustawia kolor obramowania na czerwony */
+                border-radius: 22px;
+            }
+
+            QSlider::groove:horizontal {
+                height: 20px;
+                background: #BDBDBD;
+                margin: 0 10px; /* 0-gora/dół 20px-lewo/prawo */
+                border-radius: 10px;
+
+            }
+
+            QSlider::handle:horizontal {
+                background: #FFFFFF;
+                border: 5px solid #FFFFFF;
+                width: 30px; /* 40px-5px*2 = 30px */
+                height: 1px;
+                margin: -10 -10px;
+                border-radius: 20px; /* Okrągły uchwyt */
+            }
+        )" ;
+        setStyleSheet(styleStr.c_str());
     }
     void setText(const QString &newText) {
         text = newText;
@@ -32,6 +63,8 @@ public:
         textColor = color;
         update();
     }
+
+    std::string styleStr;
 protected:
     void paintEvent(QPaintEvent *event) override {
         QSlider::paintEvent(event); // Rysuje standardowy suwak
@@ -66,8 +99,60 @@ protected:
         painter.setPen(textColor);
         painter.drawText(textX, textY, text);
     }
+    void sliderChange(SliderChange change) override 
+    {
+        qDebug() << "sliderChange "<< change;
+        QSlider::sliderChange(change);
+        updateStyle();
+    }
 
+
+    void focusInEvent(QFocusEvent* event) override {
+        QSlider::focusInEvent(event);  // Wywołanie bazowego zachowania
+        qDebug() << "Focus gained";
+        updateStyle();
+    }
+
+    void focusOutEvent(QFocusEvent* event) override {
+        QSlider::focusOutEvent(event);  // Wywołanie bazowego zachowania
+        qDebug() << "Focus lost";
+        updateStyle();
+    }
 private:
     QString text;         // Text displayed on the handle
     QColor textColor;    // Color of the displayed text
+
+    void updateStyle() {
+
+        auto text = styleStr;
+
+        qDebug() << "value() = " << value();
+
+        if(value() != 0)
+        {
+            std::string from = "BDBDBD";
+            std::string to = "2196F3";
+
+            size_t pos = text.find(from);
+            while (pos != std::string::npos) {
+                text.replace(pos, from.length(), to);
+                pos = text.find(from, pos + to.length());
+            }
+        }
+
+        if(hasFocus())
+        {
+            std::string from = "FFFFFF";
+            std::string to = "00FF00";
+
+            size_t pos = text.find(from);
+            while (pos != std::string::npos) {
+                text.replace(pos, from.length(), to);
+                pos = text.find(from, pos + to.length());
+            }
+        }
+
+
+        setStyleSheet(text.c_str());
+    }
 };
