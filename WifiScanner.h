@@ -162,7 +162,7 @@ private:
 
                 networks.push_back(network);
             } else {
-                qDebug() << "Wiersz pominięty (za mało pól):" << QString::fromStdString(line) << " line:" << lineNumber << " " << line ;
+                qDebug() << "Wiersz pominięty (za mało pól):" << QString::fromStdString(line) << " line:" << lineNumber << " " << QString::fromStdString(line) ;
             }
         }
     }

@@ -24,7 +24,15 @@ add_library(lab_wifi
 
   WiFiSwitch.cpp
   WiFiSwitch.h
+
+  WiFiSwitch3state.cpp
+  WiFiSwitch3state.h
+
+  customslider.cpp
+  customslider.h
+
 )
+
 target_link_libraries(lab_wifi Qt${QT_VERSION_MAJOR}::Core  Qt${QT_VERSION_MAJOR}::Widgets)
 target_include_directories(lab_wifi PUBLIC ./)
 

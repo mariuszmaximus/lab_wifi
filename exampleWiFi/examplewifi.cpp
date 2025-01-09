@@ -6,7 +6,14 @@
 #include <QShowEvent>
 #include <QLabel>
 #include <QPushButton>
+#include <QLineEdit>
+#include <QSlider>
+
+
+#include <qabstractspinbox.h>
+#include <qslider.h>
 #include "WiFiSwitch.h"
+#include "WiFiSwitch3state.h"
 
 ExampleWifi::ExampleWifi(QWidget *parent)
     : QWidget(parent)
@@ -14,29 +21,59 @@ ExampleWifi::ExampleWifi(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Tworzenie widgetów
-    // checkBox = new QCheckBox("Enable Feature", this);
+    // 
+    //  widgetTop
+    //    layoutTopGrid   
+    //       container0  
+    //          containerLayout0
+    //            ... 
+    //       container1  
+    //          containerLayout1 
 
-    wiFiSwitch = new WiFiSwitch( this);
-    wiFiSwitch->setFixedHeight(32);
-    wiFiSwitch->setFixedWidth(32*2);
-    wiFiSwitch->setTexts("G2", "G2");
-    connect(wiFiSwitch, &WiFiSwitch::toggled, this, [this](bool value){
-        if(value)
-            tableView.setModel(&model);
-        else
-            tableView.setModel(&modelEmpty);
-    });
+    // Tworzenie głównego widżetu
+    QWidget *widgetTop = new QWidget(this);
+    QGridLayout* layoutTopGrid = new QGridLayout;
 
-
-    wiFiSwitch->setEnabled(false);    
-
-    // Tworzenie kontenerów dla WiFiSwitch
+ 
+    // kolumna 0 
+    QWidget* container0 = new QWidget(this);
+    QVBoxLayout* containerLayout0 = new QVBoxLayout(container0);
+    containerLayout0->setContentsMargins(0, 0, 0, 0); // Usuń marginesy
+    containerLayout0->setSpacing(0); // Usuń przestrzeń wewnętrzną
+    // kolumna 1
     QWidget* container1 = new QWidget(this);
-    QVBoxLayout* containerLayout1 = new QVBoxLayout(container1);
-    containerLayout1->addWidget(wiFiSwitch, 0, Qt::AlignCenter);
-    containerLayout1->setContentsMargins(0, 0, 0, 0); // Usuń marginesy
-    containerLayout1->setSpacing(0); // Usuń przestrzeń wewnętrzną
+    QVBoxLayout* containerLayout1  = new QVBoxLayout(container1);
+    containerLayout1->setContentsMargins(0, 0, 0, 0); 
+    containerLayout1->setSpacing(0); 
+    // kolumna 2 
+    QWidget* container2 = new QWidget(this);
+    QVBoxLayout* containerLayout2  = new QVBoxLayout(container2);
+    containerLayout2->setContentsMargins(0, 0, 0, 0); 
+    containerLayout2->setSpacing(0); 
+    // kolumna 3 
+    QWidget* container3= new QWidget(this);
+    QVBoxLayout* containerLayout3  = new QVBoxLayout(container3);
+    containerLayout3->setContentsMargins(0, 0, 0, 0); 
+    containerLayout3->setSpacing(0); 
+    // kolumna 4 
+    QWidget* container4= new QWidget(this);
+    QVBoxLayout* containerLayout4  = new QVBoxLayout(container4);
+    containerLayout4->setContentsMargins(0, 0, 0, 0); 
+    containerLayout4->setSpacing(0); 
+ 
+
+
+    wiFiSwitch = new WiFiSwitch3state( this);
+    wiFiSwitch->setFixedHeight(32);
+    wiFiSwitch->setFixedWidth(32*3);
+    wiFiSwitch->setTexts("G2", "G2");
+    // connect(wiFiSwitch, &WiFiSwitch::toggled, this, [this](bool value){
+    //     if(value)
+    //         tableView.setModel(&model);
+    //     else
+    //         tableView.setModel(&modelEmpty);
+    // });
+    // wiFiSwitch->setEnabled(false);    
 
     // 
     auto *btnConnect = new WiFiSwitch( this);
@@ -44,44 +81,67 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     btnConnect->setFixedWidth(32);
     btnConnect->setTexts("OK", "OK");
     // Tworzenie kontenerów dla btnConnect
-    QWidget* container_btnConnect = new QWidget(this);
-    QVBoxLayout* layout_btnConnect  = new QVBoxLayout(container_btnConnect);
-    layout_btnConnect->addWidget(btnConnect, 0, Qt::AlignCenter);
-    layout_btnConnect->setContentsMargins(0, 0, 0, 0); // Usuń marginesy
-    layout_btnConnect->setSpacing(0); // Usuń przestrzeń wewnętrzną
     //
     auto *btnDisConnect = new WiFiSwitch( this);
     btnDisConnect->setFixedHeight(32);
     btnDisConnect->setFixedWidth(32);
     btnDisConnect->setTexts("❄", "❄");
     // Tworzenie kontenerów dla btnConnect
-    QWidget* container_btnDisConnect = new QWidget(this);
-    QVBoxLayout* layout_btnDisConnect  = new QVBoxLayout(container_btnDisConnect);
-    layout_btnDisConnect->addWidget(btnDisConnect, 0, Qt::AlignCenter);
-    layout_btnDisConnect->setContentsMargins(0, 0, 0, 0); // Usuń marginesy
-    layout_btnDisConnect->setSpacing(0); // Usuń przestrzeń wewnętrzną
     // 
     auto *btnForget = new WiFiSwitch( this);
     btnForget->setFixedHeight(32);
     btnForget->setFixedWidth(32);
     btnForget->setTexts("P", "P");
     // Tworzenie kontenerów dla btnConnect
-    QWidget* container_btnForget= new QWidget(this);
-    QVBoxLayout* layout_btnForget  = new QVBoxLayout(container_btnForget);
-    layout_btnForget->addWidget(btnForget, 0, Qt::AlignCenter);
-    layout_btnForget->setContentsMargins(0, 0, 0, 0); // Usuń marginesy
-    layout_btnForget->setSpacing(0); // Usuń przestrzeń wewnętrzną
+
+
+    containerLayout0->addWidget(wiFiSwitch, 0, Qt::AlignCenter);
+    containerLayout1->addWidget(btnConnect, 0, Qt::AlignCenter);
+    containerLayout2->addWidget(btnDisConnect, 0, Qt::AlignCenter);
+    containerLayout3->addWidget(btnForget, 0, Qt::AlignCenter);
 
 
     // {
-    // Tworzenie głównego widżetu
-    QWidget *window = new QWidget(this);
 
     // Tworzenie etykiet
-    QLabel* label1 = new QLabel("ON / OFF WiFi");
+    //QLabel* label1 = new QLabel("ON / OFF WiFi");
+    QLabel* label1 = new QLabel("AP  / OFF / WiFi");
     QLabel* label2 = new QLabel("Connect");
     QLabel* label3 = new QLabel("Disconnect");
     QLabel* label4 = new QLabel("Forget network");
+
+    horizontalSlider = new QSlider(Qt::Horizontal);
+    horizontalSlider->setMinimum(-1);
+    horizontalSlider->setMaximum(1);
+    horizontalSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    // Ustawienie stylu suwaka z okrągłym uchwytem
+    horizontalSlider->setStyleSheet(R"(
+        QSlider::groove:horizontal {
+            border: 1px solid #999999;
+            height: 8px;
+            background: #bcbcbc;
+            margin: 2px 0;
+            border-radius: 4px;
+        }
+        QSlider::handle:horizontal {
+            background: #ff5733;
+            border: 1px solid #5c5c5c;
+            width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            margin: -5px 0; /* Wyrównanie uchwytu */
+        }
+        QSlider::handle:horizontal:hover {
+            background: #ff784e;
+        }
+        QSlider::sub-page:horizontal {
+            background: #ff8c42;
+            border-radius: 4px;
+        }
+    )");
+
+
+
 
     // Wyśrodkowanie tekstu w QLabel
     label1->setAlignment(Qt::AlignCenter);
@@ -96,22 +156,24 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // QPushButton* button4 = new QPushButton("Forget network");
 
     // Tworzenie layoutu siatki
-    QGridLayout* layoutGrid = new QGridLayout;
 
     // Dodawanie etykiet do pierwszego wiersza
-    layoutGrid->addWidget(label1, 0, 0); // Wiersz 0, kolumna 0
-    layoutGrid->addWidget(label2, 0, 1); // Wiersz 0, kolumna 1
-    layoutGrid->addWidget(label3, 0, 2); // Wiersz 0, kolumna 2
-    layoutGrid->addWidget(label4, 0, 3); // Wiersz 0, kolumna 3
+    layoutTopGrid->addWidget(label1,           0, 0); 
+    layoutTopGrid->addWidget(label2,           0, 1); 
+    layoutTopGrid->addWidget(horizontalSlider, 0, 2); 
+    layoutTopGrid->addWidget(label4,           0, 3); 
 
     // Dodawanie przycisków do drugiego wiersza
-    layoutGrid->addWidget(container1,              1, 0); // Wiersz 1, kolumna 0
-    layoutGrid->addWidget(container_btnConnect,    1, 1); // Wiersz 1, kolumna 1
-    layoutGrid->addWidget(container_btnDisConnect, 1, 2); // Wiersz 1, kolumna 2
-    layoutGrid->addWidget(container_btnForget,     1, 3); // Wiersz 1, kolumna 3
+    layoutTopGrid->addWidget(container0, 1, 0);
+    layoutTopGrid->addWidget(container1, 1, 1); 
+    layoutTopGrid->addWidget(container2, 1, 2); 
+    layoutTopGrid->addWidget(container3, 1, 3); 
+    layoutTopGrid->addWidget(container4, 1, 4); 
+
+
 
     // Ustawienie layoutu na głównym widżecie
-    window->setLayout(layoutGrid);
+    widgetTop->setLayout(layoutTopGrid);
 
 
 
@@ -126,7 +188,7 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     auto* layout = new QVBoxLayout(this);
 
     // Dodawanie widgetów do głównego layoutu
-    layout->addWidget(window);  // Górna część
+    layout->addWidget(widgetTop);  // Górna część
     // layout->addWidget(topWidget);  // Górna część
     layout->addWidget(&tableView);  // Dolna część (reszta przestrzeni)
 
@@ -164,7 +226,7 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // tableView.show();
 
     // Ustawianie fokusu na tabelę
-    tableView.setFocus(Qt::OtherFocusReason);
+    // tableView.setFocus(Qt::OtherFocusReason);
 
     // Ustawienie aktywnego indeksu
     QModelIndex firstIndex = model.index(0, 0);
@@ -226,7 +288,7 @@ bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
         if (keyEvent->key() == Qt::Key_G) {
             if (canProcessGKey) {
                 // Obsłuż klawisz G
-                wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+                // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
                 canProcessGKey = false;  // Zablokuj reakcję na klawisz G
                 gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
             }
@@ -235,6 +297,20 @@ bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
             // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
             return true; // Zatrzymanie dalszego przetwarzania zdarzenia
         }
+        if (keyEvent->key() == Qt::Key_Q) {
+            wiFiSwitch->setValue(-1);
+            // wiFiSwitch->setvalue(-1);
+            
+            // wiFiSwitch->setFocus();
+            // horizontalSlider->setFocus();
+        }
+        if (keyEvent->key() == Qt::Key_W) {
+            wiFiSwitch->setValue(0);
+        }
+        if (keyEvent->key() == Qt::Key_E) {
+            wiFiSwitch->setValue(1);
+        }
+
     }
     return QWidget::eventFilter(obj, event); // Domyślne przetwarzanie
 }
@@ -255,7 +331,7 @@ void ExampleWifi::keyPressEvent(QKeyEvent* event)  {
         // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
         if (canProcessGKey) {
             // Obsłuż klawisz G
-            wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+            // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
             canProcessGKey = false;  // Zablokuj reakcję na klawisz G
             gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
         }
