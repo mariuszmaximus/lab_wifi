@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QSlider>
+#include <QTimer>
 
 
 #include <qabstractspinbox.h>
@@ -15,6 +16,7 @@
 #include <qslider.h>
 #include "WiFiSwitch.h"
 #include "WiFiSwitch3state.h"
+#include "KeyboardBlocker.h"
 
 ExampleWifi::ExampleWifi(QWidget *parent)
     : QWidget(parent)
@@ -56,11 +58,11 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     QVBoxLayout* containerLayout3  = new QVBoxLayout(container3);
     containerLayout3->setContentsMargins(0, 0, 0, 0); 
     containerLayout3->setSpacing(0); 
-    // kolumna 4 
-    QWidget* container4= new QWidget(this);
-    QVBoxLayout* containerLayout4  = new QVBoxLayout(container4);
-    containerLayout4->setContentsMargins(0, 0, 0, 0); 
-    containerLayout4->setSpacing(0); 
+    // // kolumna 4 
+    // QWidget* container4= new QWidget(this);
+    // QVBoxLayout* containerLayout4  = new QVBoxLayout(container4);
+    // containerLayout4->setContentsMargins(0, 0, 0, 0); 
+    // containerLayout4->setSpacing(0); 
  
 
 
@@ -68,10 +70,10 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     customSlider->setMinimumWidth(96);
 
 
-    wiFiSwitch = new WiFiSwitch3state( this);
-    wiFiSwitch->setFixedHeight(32);
-    wiFiSwitch->setFixedWidth(32*3);
-    wiFiSwitch->setTexts("G2", "G2");
+    // wiFiSwitch = new WiFiSwitch3state( this);
+    // wiFiSwitch->setFixedHeight(32);
+    // wiFiSwitch->setFixedWidth(32*3);
+    // wiFiSwitch->setTexts("G2", "G2");
     // connect(wiFiSwitch, &WiFiSwitch::toggled, this, [this](bool value){
     //     if(value)
     //         tableView.setModel(&model);
@@ -100,11 +102,11 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // Tworzenie kontenerów dla btnConnect
 
 
-    containerLayout0->addWidget(wiFiSwitch, 0, Qt::AlignCenter);
+    containerLayout0->addWidget(customSlider, 0, Qt::AlignCenter);
     containerLayout1->addWidget(btnConnect, 0, Qt::AlignCenter);
     containerLayout2->addWidget(btnDisConnect, 0, Qt::AlignCenter);
     containerLayout3->addWidget(btnForget, 0, Qt::AlignCenter);
-    containerLayout4->addWidget(customSlider, 0, Qt::AlignCenter);
+    //containerLayout4->addWidget(wiFiSwitch, 0, Qt::AlignCenter);
 
 
     // {
@@ -115,46 +117,46 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     QLabel* label1 = new QLabel("Connect");
     QLabel* label2 = new QLabel("Disconnect");
     QLabel* label3 = new QLabel("Forget network");
-    QLabel* label4 = new QLabel("AP  / OFF / WiFi");
 
-    horizontalSlider = new QSlider(Qt::Horizontal);
-    horizontalSlider->setMinimum(-1);
-    horizontalSlider->setMaximum(1);
-    horizontalSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    // Ustawienie stylu suwaka z okrągłym uchwytem
-    horizontalSlider->setStyleSheet(R"(
-        QSlider::groove:horizontal {
-            border: 1px solid #999999;
-            height: 8px;
-            background: #bcbcbc;
-            margin: 2px 0;
-            border-radius: 4px;
-        }
-        QSlider::handle:horizontal {
-            background: #ff5733;
-            border: 1px solid #5c5c5c;
-            width: 18px;
-            height: 18px;
-            border-radius: 9px;
-            margin: -5px 0; /* Wyrównanie uchwytu */
-        }
-        QSlider::handle:horizontal:hover {
-            background: #ff784e;
-        }
-        QSlider::sub-page:horizontal {
-            background: #ff8c42;
-            border-radius: 4px;
-        }
-    )");
+    // horizontalSlider = new QSlider(Qt::Horizontal);
+    // horizontalSlider->setMinimum(-1);
+    // horizontalSlider->setMaximum(1);
+    // horizontalSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    // // Ustawienie stylu suwaka z okrągłym uchwytem
+    // horizontalSlider->setStyleSheet(R"(
+    //     QSlider::groove:horizontal {
+    //         border: 1px solid #999999;
+    //         height: 8px;
+    //         background: #bcbcbc;
+    //         margin: 2px 0;
+    //         border-radius: 4px;
+    //     }
+    //     QSlider::handle:horizontal {
+    //         background: #ff5733;
+    //         border: 1px solid #5c5c5c;
+    //         width: 18px;
+    //         height: 18px;
+    //         border-radius: 9px;
+    //         margin: -5px 0; /* Wyrównanie uchwytu */
+    //     }
+    //     QSlider::handle:horizontal:hover {
+    //         background: #ff784e;
+    //     }
+    //     QSlider::sub-page:horizontal {
+    //         background: #ff8c42;
+    //         border-radius: 4px;
+    //     }
+    // )");
 
 
 
 
     // Wyśrodkowanie tekstu w QLabel
+    label0->setAlignment(Qt::AlignCenter);
     label1->setAlignment(Qt::AlignCenter);
     label2->setAlignment(Qt::AlignCenter);
     label3->setAlignment(Qt::AlignCenter);
-    label4->setAlignment(Qt::AlignCenter);    
+    // label4->setAlignment(Qt::AlignCenter);    
 
     // Tworzenie przycisków
     // QPushButton* button1 = new QPushButton("Przycisk 1");
@@ -167,16 +169,16 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // Dodawanie etykiet do pierwszego wiersza
     layoutTopGrid->addWidget(label0,           0, 0); 
     layoutTopGrid->addWidget(label1,           0, 1); 
-    layoutTopGrid->addWidget(horizontalSlider, 0, 2); 
+    layoutTopGrid->addWidget(label2,           0, 2); // layoutTopGrid->addWidget(horizontalSlider, 0, 2); 
     layoutTopGrid->addWidget(label3,           0, 3); 
-    layoutTopGrid->addWidget(label4,           0, 4); 
+    // layoutTopGrid->addWidget(label4,           0, 4); 
 
     // Dodawanie przycisków do drugiego wiersza
     layoutTopGrid->addWidget(container0, 1, 0);
     layoutTopGrid->addWidget(container1, 1, 1); 
     layoutTopGrid->addWidget(container2, 1, 2); 
     layoutTopGrid->addWidget(container3, 1, 3); 
-    layoutTopGrid->addWidget(container4, 1, 4); 
+    // layoutTopGrid->addWidget(container4, 1, 4); 
 
 
 
@@ -270,6 +272,59 @@ ExampleWifi::ExampleWifi(QWidget *parent)
 
     tableView.installEventFilter(this);
     customSlider->installEventFilter(this);
+
+
+    KeyboardBlocker *keyboardBlocker = new KeyboardBlocker(this);
+
+
+
+    auto  blockKeyboardInput = [this, keyboardBlocker](bool block) {
+        // Globalne zablokowanie klawiatury w aplikacji
+        if (block) {
+            QApplication::instance()->installEventFilter(keyboardBlocker);
+        } else {
+            QApplication::instance()->removeEventFilter(keyboardBlocker);
+        }
+    };
+
+    auto plaseWait = [this, blockKeyboardInput](int ms){
+        QLabel *waitLabel;  // Etykieta z napisem "Proszę czekać"
+
+        // Utworzenie widgetu z napisem "Proszę czekać"
+        waitLabel = new QLabel(this);
+        waitLabel->setText("Proszę czekać");
+        waitLabel->setAlignment(Qt::AlignCenter);
+        waitLabel->setStyleSheet("QLabel { font-size: 24px; color: white; background-color: rgba(0, 0, 0, 180); }");
+
+        // Umieszczenie napisu na całym oknie (przykrywając całe okno)
+        waitLabel->setGeometry(0, 0, width(), height());
+
+        waitLabel->show();
+        waitLabel->raise();
+
+        QTimer::singleShot(ms, this,[waitLabel, blockKeyboardInput]()
+        {
+            waitLabel->hide();
+            blockKeyboardInput(false);
+        }); 
+
+        blockKeyboardInput(true);
+    };
+
+
+
+
+    connect(customSlider, &CustomSlider::valueChanged, this, [this, plaseWait](int value) {
+        qDebug() << "CustomSlider value changed:" << value;
+        if(value==0)
+        {
+            plaseWait(500);
+        }
+        else
+        {
+           plaseWait(1500);
+        }
+    });
 }
 
 

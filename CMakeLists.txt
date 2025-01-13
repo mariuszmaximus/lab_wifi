@@ -31,6 +31,9 @@ add_library(lab_wifi
   customslider.cpp
   customslider.h
 
+  KeyboardBlocker.cpp
+  KeyboardBlocker.h
+
 )
 
 target_link_libraries(lab_wifi Qt${QT_VERSION_MAJOR}::Core  Qt${QT_VERSION_MAJOR}::Widgets)

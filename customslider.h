@@ -37,16 +37,16 @@ public:
 
         styleStr = R"(
             QSlider {
-                min-height: 40px; /* jak jest border to musi byc min-height = height - border*2 np. aby bylo 44 to  (44 -4 -4) = 36  */
-                max-height: 40px;
+                min-height: 24px; /* jak jest border to musi byc min-height = height - border*2 np. aby bylo 44 to  (44 -4 -4) = 36  */
+                max-height: 24px;
                 background: #BDBDBD;
-                border: 5px solid #BDBDBD; /* Ustawia kolor obramowania na czerwony */
-                border-radius: 25px;
+                border: 4px solid #BDBDBD; /* Ustawia kolor obramowania na czerwony */
+                border-radius: 16px;
             }
 
             QSlider::groove:horizontal {
                 height: 10px;
-                background: #FFBDBD;
+                background: #BDBDBD;
                 margin: 0 10px; /* 0-gora/dół 20px-lewo/prawo */
                 border-radius: 5px;
 
@@ -55,10 +55,10 @@ public:
             QSlider::handle:horizontal {
                 background: #FFFFFF;
                 border: 5px solid #FFFFFF;
-                width: 30px; /* 40px-5px*2 = 30px */
+                width: 14px; /* 40px-5px*2 = 30px */
                 height: 1px;
-                margin: -15 -10px;
-                border-radius: 20px; /* Okrągły uchwyt */
+                margin: -7 -10px;
+                border-radius: 12px; /* Okrągły uchwyt */
             }
         )" ;
         setStyleSheet(styleStr.c_str());

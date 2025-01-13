@@ -40,8 +40,8 @@ private:
     WifiNetworkModel model;
     WifiNetworkModel modelEmpty;
     QTableView tableView;    
-    WiFiSwitch3state *wiFiSwitch;
-    QSlider *horizontalSlider;
+    // WiFiSwitch3state *wiFiSwitch;
+    // QSlider *horizontalSlider;
 
     CustomSlider *customSlider;
 
