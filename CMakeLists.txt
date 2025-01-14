@@ -21,11 +21,12 @@ add_library(lab_wifi
 
   WifiNetworkModel.h
   WifiNetworkModel.cpp  
+
   WiFiSwitch.cpp
   WiFiSwitch.h
   
-  customslider.cpp
-  customslider.h
+  WiFiSlider.cpp
+  WiFiSlider.h
 
   KeyboardBlocker.cpp
   KeyboardBlocker.h

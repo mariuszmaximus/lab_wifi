@@ -6,7 +6,7 @@
 #include "WifiScanner.h"
 #include "WifiNetworkModel.h"
 
-#include "customslider.h"
+#include "WiFiSlider.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

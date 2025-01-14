@@ -1,2 +1,2 @@
-#include "customslider.h"
+#include "WiFiSlider.h"
 
