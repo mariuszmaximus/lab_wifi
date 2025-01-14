@@ -3,9 +3,9 @@
 #include <QWidget>
 #include <QKeyEvent>
 #include <QTableView>
-#include "WifiScanner.h"
-#include "WifiNetworkModel.h"
 
+#include "WiFi/WifiScanner.h"
+#include "WiFi/MVC/WifiNetworkModel.h"
 #include "WiFi/UI/WiFiSlider.h"
 
 QT_BEGIN_NAMESPACE
@@ -36,9 +36,10 @@ protected:
 private:
     Ui::ExampleWifi *ui;
 
-    WiFi::WifiScanner wifiscanner;
-    WifiNetworkModel model;
-    WifiNetworkModel modelEmpty;
     QTableView tableView;    
+
+    WiFi::WifiScanner wifiscanner;
+    WiFi::MVC::WifiNetworkModel model;
+    WiFi::MVC::WifiNetworkModel modelEmpty;
     WiFi::UI::WiFiSlider *wifiSlider;
 };

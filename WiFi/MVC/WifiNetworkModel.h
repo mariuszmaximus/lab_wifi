@@ -1,7 +1,9 @@
 #include <QAbstractTableModel>
 #include <vector>
 #include <QString>
-#include "WifiScanner.h" // Zakładamy, że tu jest definicja RecWifiNetwork
+#include "WiFi/WifiScanner.h" // Zakładamy, że tu jest definicja RecWifiNetwork
+
+namespace WiFi::MVC {
 
 class WifiNetworkModel : public QAbstractTableModel {
     Q_OBJECT
@@ -88,3 +90,5 @@ public:
 private:
     std::vector<WiFi::RecWifiNetwork> networks;
 };
+
+}; // namespace WiFi::MVC

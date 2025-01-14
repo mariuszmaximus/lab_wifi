@@ -1,6 +1,8 @@
 #include <QStyledItemDelegate>
 #include <QPainter>
 
+namespace WiFi::UI {
+
 class WifiDelegate : public QStyledItemDelegate {
     Q_OBJECT
 
@@ -17,3 +19,5 @@ public:
         QStyledItemDelegate::paint(painter, option, index);
     }
 };
+
+}; // namespace WiFi::UI

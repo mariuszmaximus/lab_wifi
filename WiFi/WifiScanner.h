@@ -7,8 +7,6 @@
 #include <vector>
 #include <string>
 #include <sstream>
-#include <regex>
-
 
 namespace WiFi {
 

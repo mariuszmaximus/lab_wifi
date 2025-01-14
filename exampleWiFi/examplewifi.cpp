@@ -1,6 +1,6 @@
 #include "examplewifi.h"
 #include "./ui_examplewifi.h"
-#include "WifiDelegate.h"
+
 
 #include <QVBoxLayout>
 #include <QShowEvent>
@@ -19,6 +19,8 @@
 
 #include "WiFi/UI/WiFiSwitch.h"
 #include "WiFi/UI/KeyboardBlocker.h"
+#include "WiFi/UI/WifiDelegate.h"
+
 
 ExampleWifi::ExampleWifi(QWidget *parent)
     : QWidget(parent)
@@ -146,7 +148,7 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     tableView.setModel(&model);
 
     // Ustawienie delegata
-    auto* delegate = new WifiDelegate(this);
+    auto* delegate = new WiFi::UI::WifiDelegate(this);
     tableView.setItemDelegate(delegate);
 
     // Ustaw szerokości kolumn

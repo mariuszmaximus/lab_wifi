@@ -13,14 +13,14 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets)
 
 add_library(lab_wifi
-  WifiScanner.cpp
-  WifiScanner.h
+  WiFi/WifiScanner.cpp
+  WiFi/WifiScanner.h
 
-  WifiDelegate.cpp
-  WifiDelegate.h
+  WiFi/MVC/WifiNetworkModel.h
+  WiFi/MVC/WifiNetworkModel.cpp  
 
-  WifiNetworkModel.h
-  WifiNetworkModel.cpp  
+  WiFi/UI/WifiDelegate.cpp
+  WiFi/UI/WifiDelegate.h
 
   WiFi/UI/WiFiSwitch.cpp
   WiFi/UI/WiFiSwitch.h
