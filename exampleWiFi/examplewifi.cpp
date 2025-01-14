@@ -126,7 +126,6 @@ ExampleWifi::ExampleWifi(QWidget *parent)
 
 
     auto *stackedWidget = new QStackedWidget;
-    stackedWidget->addWidget(&tableView);
  
     // Tworzenie layoutu
     auto* layout = new QVBoxLayout(this);
@@ -226,7 +225,7 @@ ExampleWifi::ExampleWifi(QWidget *parent)
         waitLabel = new QLabel(this);
         waitLabel->setText("Proszę czekać");
         waitLabel->setAlignment(Qt::AlignCenter);
-        waitLabel->setStyleSheet("QLabel { font-size: 24px; color: white; background-color: rgba(0, 0, 0, 180); }");
+        waitLabel->setStyleSheet("QLabel { font-size: 32px; color: white; background-color: rgba(0, 0, 0, 180); }");
 
         // Umieszczenie napisu na całym oknie (przykrywając całe okno)
         waitLabel->setGeometry(0, 0, width(), height());
@@ -243,19 +242,51 @@ ExampleWifi::ExampleWifi(QWidget *parent)
         blockKeyboardInput(true);
     };
 
+    auto *tabAP = new QLabel();
+    tabAP->setText("Acces Point mode");
+    tabAP->setAlignment(Qt::AlignCenter);
+    tabAP->setStyleSheet("QLabel { font-size: 24px; }");
+    
+    
+    
+    auto *tabOFF = new QLabel();
+    tabOFF->setText("Comunication disabled");
+    tabOFF->setAlignment(Qt::AlignCenter);
+    tabOFF->setStyleSheet("QLabel { font-size: 24px;  }");
 
 
+    QWidget *tabWIFI = &tableView;//new QWidget();
 
-    connect(customSlider, &CustomSlider::valueChanged, this, [this, plaseWait](int value) {
-        qDebug() << "CustomSlider value changed:" << value;
-        if(value==0)
+
+    stackedWidget->addWidget(tabAP);
+
+
+    stackedWidget->addWidget(tabOFF);
+    stackedWidget->addWidget(tabWIFI);
+
+
+    auto setPageEvent = [this,  plaseWait, stackedWidget, tabAP, tabWIFI, tabOFF  ](int index) {
+        if(index == 0)
         {
+            // tableView.setFocus(Qt::OtherFocusReason);
+            stackedWidget->setCurrentWidget(tabOFF);
             plaseWait(500);
         }
-        else
+        else if(index == -1) 
         {
-           plaseWait(1500);
+            stackedWidget->setCurrentWidget(tabAP);
+            plaseWait(1500);
         }
+        else if (index == 1)
+        {
+            stackedWidget->setCurrentWidget(tabWIFI);
+            plaseWait(1500);
+        }
+    };
+
+    connect(customSlider, &CustomSlider::valueChanged, this, [this, setPageEvent](int value) {
+        qDebug() << "CustomSlider value changed:" << value;
+        setPageEvent(value);
     });
 }
 
