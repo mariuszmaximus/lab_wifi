@@ -39,7 +39,12 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     QWidget *widgetTop = new QWidget(this);
     QGridLayout* layoutTopGrid = new QGridLayout;
 
- 
+    int COLUMN_COUNT{4};
+    // Opcjonalne proporcje szerokości
+    for (int i = 0; i < COLUMN_COUNT; ++i) {
+        layoutTopGrid->setColumnStretch(i, 1); // Wszystkie kolumny są rozciągane proporcjonalnie
+    }
+
     // kolumna 0 
     QWidget* container0 = new QWidget(this);
     QVBoxLayout* containerLayout0 = new QVBoxLayout(container0);
@@ -265,7 +270,10 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     stackedWidget->addWidget(tabWIFI);
 
 
-    auto setPageEvent = [this,  plaseWait, stackedWidget, tabAP, tabWIFI, tabOFF  ](int index) {
+    auto setPageEvent = [this,  plaseWait, stackedWidget, tabAP, tabWIFI, tabOFF, 
+        label1,label2,label3, container1, container2, container3 ](int index) {
+
+        // ustawiam zakladke 
         if(index == 0)
         {
             // tableView.setFocus(Qt::OtherFocusReason);
@@ -278,7 +286,16 @@ ExampleWifi::ExampleWifi(QWidget *parent)
         else if (index == 1)
         {
             stackedWidget->setCurrentWidget(tabWIFI);
+            tableView.setFocus(Qt::OtherFocusReason);
         }
+
+        // ustawiam komponent
+        label1->setVisible(index == 1);
+        label2->setVisible(index == 1);
+        label3->setVisible(index == 1);
+        container1->setVisible(index == 1);
+        container2->setVisible(index == 1);
+        container3->setVisible(index == 1);
     };
 
     customSlider->setValue(1);
