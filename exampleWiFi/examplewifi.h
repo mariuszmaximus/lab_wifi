@@ -1,5 +1,4 @@
-#ifndef EXAMPLEWIFI_H
-#define EXAMPLEWIFI_H
+#pragma once
 
 #include <QWidget>
 #include <QKeyEvent>
@@ -40,12 +39,5 @@ private:
     WifiNetworkModel model;
     WifiNetworkModel modelEmpty;
     QTableView tableView;    
-    // WiFiSwitch3state *wiFiSwitch;
-    // QSlider *horizontalSlider;
-
     CustomSlider *customSlider;
-
-    bool canProcessGKey{true};
-    QTimer gKeyTimer;
 };
-#endif // EXAMPLEWIFI_H

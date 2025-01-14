@@ -186,13 +186,6 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     widgetTop->setLayout(layoutTopGrid);
 
 
-
-    // Inicjalizacja timera
-    gKeyTimer.setSingleShot(true);
-    connect(&gKeyTimer, &QTimer::timeout, this, [this]() {
-        canProcessGKey = true;  // Po upływie 3 sekund klawisz G może znowu działać
-    });
-
  
     // Tworzenie layoutu
     auto* layout = new QVBoxLayout(this);
@@ -351,25 +344,17 @@ ExampleWifi::~ExampleWifi()
 bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
     if (obj == &tableView && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent->key() == Qt::Key_G) {
-            if (canProcessGKey) {
-                // Obsłuż klawisz G
-                // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
-                canProcessGKey = false;  // Zablokuj reakcję na klawisz G
-                gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
-                customSlider->setFocus();
-            }
-            // Zmień stan checkboxa
-            // checkBox->setChecked(!checkBox->isChecked());
-            // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
+        if (keyEvent->key() == Qt::Key_A) {
+            customSlider->setFocus();
             return true; // Zatrzymanie dalszego przetwarzania zdarzenia
         }
+        if (keyEvent->key() == Qt::Key_G) {
+            customSlider->setFocus();
+            return true; // Zatrzymanie dalszego przetwarzania zdarzenia
+        }
+
         if (keyEvent->key() == Qt::Key_Q) {
             customSlider->setValue(-1);
-            // wiFiSwitch->setvalue(-1);
-            
-            // wiFiSwitch->setFocus();
-            // horizontalSlider->setFocus();
         }
         if (keyEvent->key() == Qt::Key_W) {
             customSlider->setValue(0);
@@ -383,51 +368,10 @@ bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
     if (obj == customSlider && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_Return) {
-            // if (canProcessGKey) {
-            //     // Obsłuż klawisz G
-            //     // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
-            //     canProcessGKey = false;  // Zablokuj reakcję na klawisz G
-            //     gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
-            //     // customSlider->setFocus();
-            // }
             tableView.setFocus(Qt::OtherFocusReason);
-            // Zmień stan checkboxa
-            // checkBox->setChecked(!checkBox->isChecked());
-            // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
             return true; // Zatrzymanie dalszego przetwarzania zdarzenia
         }
-
     }        
 
     return QWidget::eventFilter(obj, event); // Domyślne przetwarzanie
 }
-
-
-// void ExampleWifi::keyPressEvent(QKeyEvent* event)  {
-//     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
-//         // Pobierz aktualnie wybrany wiersz
-//         QModelIndex currentIndex = tableView.currentIndex();
-//         if (currentIndex.isValid()) {
-//             // Pobierz dane z kolumny SSID
-//             QString ssid = tableView.model()->data(currentIndex.siblingAtColumn(0)).toString(); // Kolumna SSID
-//             qDebug() << "Selected SSID:" << ssid;
-//         }
-//     } else if (event->key() == Qt::Key_G) {
-//         // Zmień stan checkboxa
-//         //checkBox->setChecked(!checkBox->isChecked());
-//         // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
-//         if (canProcessGKey) {
-//             // Obsłuż klawisz G
-//             // wiFiSwitch->setChecked(!wiFiSwitch->isChecked());
-//             canProcessGKey = false;  // Zablokuj reakcję na klawisz G
-//             gKeyTimer.start(3000);   // Ustaw 3-sekundowy timer
-//         }
-//         else
-//         {
-//             QWidget::keyPressEvent(event); // Domyślne zachowanie    
-//         }
-
-//     } else {
-//         QWidget::keyPressEvent(event); // Domyślne zachowanie
-//     }
-// }
