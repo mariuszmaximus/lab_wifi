@@ -40,5 +40,5 @@ private:
     WifiNetworkModel model;
     WifiNetworkModel modelEmpty;
     QTableView tableView;    
-    WiFi::UI::CustomSlider *customSlider;
+    WiFi::UI::WiFiSlider *wifiSlider;
 };

@@ -18,9 +18,9 @@
 
 namespace WiFi::UI {
 
-class CustomSlider : public QSlider {
+class WiFiSlider : public QSlider {
 public:
-    explicit CustomSlider(QWidget *parent = nullptr)
+    explicit WiFiSlider(QWidget *parent = nullptr)
         : QSlider(Qt::Horizontal, parent),
             text("G2"),
             textColor(Qt::black)

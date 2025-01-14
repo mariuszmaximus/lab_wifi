@@ -68,8 +68,8 @@ ExampleWifi::ExampleWifi(QWidget *parent)
  
 
 
-    customSlider  = new WiFi::UI::CustomSlider(this);
-    customSlider->setMinimumWidth(96);
+    wifiSlider  = new WiFi::UI::WiFiSlider(this);
+    wifiSlider->setMinimumWidth(96);
 
 
     // 
@@ -92,7 +92,7 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     // Tworzenie kontenerów dla btnConnect
 
 
-    containerLayout0->addWidget(customSlider, 0, Qt::AlignCenter);
+    containerLayout0->addWidget(wifiSlider, 0, Qt::AlignCenter);
     containerLayout1->addWidget(btnConnect, 0, Qt::AlignCenter);
     containerLayout2->addWidget(btnDisConnect, 0, Qt::AlignCenter);
     containerLayout3->addWidget(btnForget, 0, Qt::AlignCenter);
@@ -207,7 +207,7 @@ ExampleWifi::ExampleWifi(QWidget *parent)
 
 
     tableView.installEventFilter(this);
-    customSlider->installEventFilter(this);
+    wifiSlider->installEventFilter(this);
 
 
     auto *keyboardBlocker = new WiFi::UI::KeyboardBlocker(this);
@@ -298,10 +298,10 @@ ExampleWifi::ExampleWifi(QWidget *parent)
         container3->setVisible(index == 1);
     };
 
-    customSlider->setValue(1);
-    setPageEvent(customSlider->value());
+    wifiSlider->setValue(1);
+    setPageEvent(wifiSlider->value());
 
-    connect(customSlider, &WiFi::UI::CustomSlider::valueChanged, this, [this, setPageEvent, plaseWait](int value) {
+    connect(wifiSlider, &WiFi::UI::WiFiSlider::valueChanged, this, [this, setPageEvent, plaseWait](int value) {
         qDebug() << "CustomSlider value changed:" << value;
         setPageEvent(value);
         if(value == 0)
@@ -336,29 +336,29 @@ bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
 
         // G2 
         if (keyEvent->key() == Qt::Key_A) {
-            customSlider->setFocus();
+            wifiSlider->setFocus();
             return true; // Zatrzymanie dalszego przetwarzania zdarzenia
         }
 
         // G1
         if (keyEvent->key() == Qt::Key_G) {
-            customSlider->setFocus();
+            wifiSlider->setFocus();
             return true; // Zatrzymanie dalszego przetwarzania zdarzenia
         }
 
         if (keyEvent->key() == Qt::Key_Q) {
-            customSlider->setValue(-1);
+            wifiSlider->setValue(-1);
         }
         if (keyEvent->key() == Qt::Key_W) {
-            customSlider->setValue(0);
+            wifiSlider->setValue(0);
         }
         if (keyEvent->key() == Qt::Key_E) {
-            customSlider->setValue(1);
+            wifiSlider->setValue(1);
         }
 
     }
 
-    if (obj == customSlider && event->type() == QEvent::KeyPress) {
+    if (obj == wifiSlider && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_Return) {
             tableView.setFocus(Qt::OtherFocusReason);
