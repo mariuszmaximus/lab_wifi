@@ -9,6 +9,8 @@
 #include <QLineEdit>
 #include <QSlider>
 #include <QTimer>
+#include <QStackedWidget>
+
 
 
 #include <qabstractspinbox.h>
@@ -58,29 +60,12 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     QVBoxLayout* containerLayout3  = new QVBoxLayout(container3);
     containerLayout3->setContentsMargins(0, 0, 0, 0); 
     containerLayout3->setSpacing(0); 
-    // // kolumna 4 
-    // QWidget* container4= new QWidget(this);
-    // QVBoxLayout* containerLayout4  = new QVBoxLayout(container4);
-    // containerLayout4->setContentsMargins(0, 0, 0, 0); 
-    // containerLayout4->setSpacing(0); 
  
 
 
     customSlider  = new CustomSlider(this);
     customSlider->setMinimumWidth(96);
 
-
-    // wiFiSwitch = new WiFiSwitch3state( this);
-    // wiFiSwitch->setFixedHeight(32);
-    // wiFiSwitch->setFixedWidth(32*3);
-    // wiFiSwitch->setTexts("G2", "G2");
-    // connect(wiFiSwitch, &WiFiSwitch::toggled, this, [this](bool value){
-    //     if(value)
-    //         tableView.setModel(&model);
-    //     else
-    //         tableView.setModel(&modelEmpty);
-    // });
-    // wiFiSwitch->setEnabled(false);    
 
     // 
     auto *btnConnect = new WiFiSwitch( this);
@@ -106,49 +91,12 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     containerLayout1->addWidget(btnConnect, 0, Qt::AlignCenter);
     containerLayout2->addWidget(btnDisConnect, 0, Qt::AlignCenter);
     containerLayout3->addWidget(btnForget, 0, Qt::AlignCenter);
-    //containerLayout4->addWidget(wiFiSwitch, 0, Qt::AlignCenter);
-
-
-    // {
 
     // Tworzenie etykiet
-    //QLabel* label1 = new QLabel("ON / OFF WiFi");
     QLabel* label0 = new QLabel("AP  / OFF / WiFi");
     QLabel* label1 = new QLabel("Connect");
     QLabel* label2 = new QLabel("Disconnect");
     QLabel* label3 = new QLabel("Forget network");
-
-    // horizontalSlider = new QSlider(Qt::Horizontal);
-    // horizontalSlider->setMinimum(-1);
-    // horizontalSlider->setMaximum(1);
-    // horizontalSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    // // Ustawienie stylu suwaka z okrągłym uchwytem
-    // horizontalSlider->setStyleSheet(R"(
-    //     QSlider::groove:horizontal {
-    //         border: 1px solid #999999;
-    //         height: 8px;
-    //         background: #bcbcbc;
-    //         margin: 2px 0;
-    //         border-radius: 4px;
-    //     }
-    //     QSlider::handle:horizontal {
-    //         background: #ff5733;
-    //         border: 1px solid #5c5c5c;
-    //         width: 18px;
-    //         height: 18px;
-    //         border-radius: 9px;
-    //         margin: -5px 0; /* Wyrównanie uchwytu */
-    //     }
-    //     QSlider::handle:horizontal:hover {
-    //         background: #ff784e;
-    //     }
-    //     QSlider::sub-page:horizontal {
-    //         background: #ff8c42;
-    //         border-radius: 4px;
-    //     }
-    // )");
-
-
 
 
     // Wyśrodkowanie tekstu w QLabel
@@ -156,13 +104,7 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     label1->setAlignment(Qt::AlignCenter);
     label2->setAlignment(Qt::AlignCenter);
     label3->setAlignment(Qt::AlignCenter);
-    // label4->setAlignment(Qt::AlignCenter);    
 
-    // Tworzenie przycisków
-    // QPushButton* button1 = new QPushButton("Przycisk 1");
-    // QPushButton* button2 = new QPushButton("Connect");
-    // QPushButton* button3 = new QPushButton("Disconnect");
-    // QPushButton* button4 = new QPushButton("Forget network");
 
     // Tworzenie layoutu siatki
 
@@ -171,34 +113,31 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     layoutTopGrid->addWidget(label1,           0, 1); 
     layoutTopGrid->addWidget(label2,           0, 2); // layoutTopGrid->addWidget(horizontalSlider, 0, 2); 
     layoutTopGrid->addWidget(label3,           0, 3); 
-    // layoutTopGrid->addWidget(label4,           0, 4); 
 
     // Dodawanie przycisków do drugiego wiersza
     layoutTopGrid->addWidget(container0, 1, 0);
     layoutTopGrid->addWidget(container1, 1, 1); 
     layoutTopGrid->addWidget(container2, 1, 2); 
     layoutTopGrid->addWidget(container3, 1, 3); 
-    // layoutTopGrid->addWidget(container4, 1, 4); 
-
 
 
     // Ustawienie layoutu na głównym widżecie
     widgetTop->setLayout(layoutTopGrid);
 
 
+    auto *stackedWidget = new QStackedWidget;
+    stackedWidget->addWidget(&tableView);
  
     // Tworzenie layoutu
     auto* layout = new QVBoxLayout(this);
 
     // Dodawanie widgetów do głównego layoutu
     layout->addWidget(widgetTop);  // Górna część
-    // layout->addWidget(topWidget);  // Górna część
-    layout->addWidget(&tableView);  // Dolna część (reszta przestrzeni)
+    layout->addWidget(stackedWidget);  // Dolna część (reszta przestrzeni)
 
     // Ustawienie głównego layoutu
     setLayout(layout);
 
-    tableView.setParent(this);
 
     tableView.setModel(&model);
 
@@ -344,10 +283,14 @@ ExampleWifi::~ExampleWifi()
 bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
     if (obj == &tableView && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+
+        // G2 
         if (keyEvent->key() == Qt::Key_A) {
             customSlider->setFocus();
             return true; // Zatrzymanie dalszego przetwarzania zdarzenia
         }
+
+        // G1
         if (keyEvent->key() == Qt::Key_G) {
             customSlider->setFocus();
             return true; // Zatrzymanie dalszego przetwarzania zdarzenia
