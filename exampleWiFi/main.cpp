@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
     ExampleWifi w;
 #ifdef WIN32
     w.resize(1024, 768);
+    w.show();
 #else    
     w.showFullScreen();
 #endif
