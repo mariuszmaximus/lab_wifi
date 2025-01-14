@@ -270,26 +270,29 @@ ExampleWifi::ExampleWifi(QWidget *parent)
         {
             // tableView.setFocus(Qt::OtherFocusReason);
             stackedWidget->setCurrentWidget(tabOFF);
-            plaseWait(500);
         }
         else if(index == -1) 
         {
             stackedWidget->setCurrentWidget(tabAP);
-            plaseWait(1500);
         }
         else if (index == 1)
         {
             stackedWidget->setCurrentWidget(tabWIFI);
-            plaseWait(1500);
         }
     };
 
-    connect(customSlider, &CustomSlider::valueChanged, this, [this, setPageEvent](int value) {
+    customSlider->setValue(1);
+    setPageEvent(customSlider->value());
+
+    connect(customSlider, &CustomSlider::valueChanged, this, [this, setPageEvent, plaseWait](int value) {
         qDebug() << "CustomSlider value changed:" << value;
         setPageEvent(value);
+        if(value == 0)
+            plaseWait(500);
+        else
+            plaseWait(1500);
     });
 }
-
 
 void ExampleWifi::showEvent(QShowEvent* event) {
     QWidget::showEvent(event); // Wywołanie bazowej implementacji
@@ -304,7 +307,6 @@ void ExampleWifi::showEvent(QShowEvent* event) {
         tableView.scrollTo(firstIndex);
     }
 }
-
 
 ExampleWifi::~ExampleWifi()
 {
