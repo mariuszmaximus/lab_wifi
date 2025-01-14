@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 
+namespace WiFi::UI {
 class WiFiSwitch : public QCheckBox {
     Q_OBJECT
 
@@ -85,3 +86,5 @@ private:
     QString mTextOn;         // Tekst, gdy przełącznik jest włączony
     QString mTextOff;        // Tekst, gdy przełącznik jest wyłączony
 };
+
+}; // namespace WiFi::Ui

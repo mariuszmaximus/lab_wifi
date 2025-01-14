@@ -16,6 +16,8 @@
 #include <QDebug>
 // #include <qglobal.h>
 
+namespace WiFi::UI {
+
 class CustomSlider : public QSlider {
 public:
     explicit CustomSlider(QWidget *parent = nullptr)
@@ -165,3 +167,5 @@ private:
         setStyleSheet(text.c_str());
     }
 };
+
+}; // namespace WiFi::UI

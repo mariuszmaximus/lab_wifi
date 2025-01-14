@@ -22,14 +22,14 @@ add_library(lab_wifi
   WifiNetworkModel.h
   WifiNetworkModel.cpp  
 
-  WiFiSwitch.cpp
-  WiFiSwitch.h
+  WiFi/UI/WiFiSwitch.cpp
+  WiFi/UI/WiFiSwitch.h
   
-  WiFiSlider.cpp
-  WiFiSlider.h
+  WiFi/UI/WiFiSlider.cpp
+  WiFi/UI/WiFiSlider.h
 
-  KeyboardBlocker.cpp
-  KeyboardBlocker.h
+  WiFi/UI/KeyboardBlocker.cpp
+  WiFi/UI/KeyboardBlocker.h
 )
 
 target_link_libraries(lab_wifi Qt${QT_VERSION_MAJOR}::Core  Qt${QT_VERSION_MAJOR}::Widgets)

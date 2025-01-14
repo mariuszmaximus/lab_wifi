@@ -13,11 +13,12 @@
 
 
 
-#include <qabstractspinbox.h>
-#include <qnamespace.h>
-#include <qslider.h>
-#include "WiFiSwitch.h"
-#include "KeyboardBlocker.h"
+// #include <qabstractspinbox.h>
+// #include <qnamespace.h>
+// #include <qslider.h>
+
+#include "WiFi/UI/WiFiSwitch.h"
+#include "WiFi/UI/KeyboardBlocker.h"
 
 ExampleWifi::ExampleWifi(QWidget *parent)
     : QWidget(parent)
@@ -67,24 +68,24 @@ ExampleWifi::ExampleWifi(QWidget *parent)
  
 
 
-    customSlider  = new CustomSlider(this);
+    customSlider  = new WiFi::UI::CustomSlider(this);
     customSlider->setMinimumWidth(96);
 
 
     // 
-    auto *btnConnect = new WiFiSwitch( this);
+    auto *btnConnect = new WiFi::UI::WiFiSwitch( this);
     btnConnect->setFixedHeight(32);
     btnConnect->setFixedWidth(32);
     btnConnect->setTexts("OK", "OK");
     // Tworzenie kontenerów dla btnConnect
     //
-    auto *btnDisConnect = new WiFiSwitch( this);
+    auto *btnDisConnect = new WiFi::UI::WiFiSwitch( this);
     btnDisConnect->setFixedHeight(32);
     btnDisConnect->setFixedWidth(32);
     btnDisConnect->setTexts("❄", "❄");
     // Tworzenie kontenerów dla btnConnect
     // 
-    auto *btnForget = new WiFiSwitch( this);
+    auto *btnForget = new WiFi::UI::WiFiSwitch( this);
     btnForget->setFixedHeight(32);
     btnForget->setFixedWidth(32);
     btnForget->setTexts("P", "P");
@@ -209,7 +210,7 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     customSlider->installEventFilter(this);
 
 
-    KeyboardBlocker *keyboardBlocker = new KeyboardBlocker(this);
+    auto *keyboardBlocker = new WiFi::UI::KeyboardBlocker(this);
 
 
 
@@ -300,7 +301,7 @@ ExampleWifi::ExampleWifi(QWidget *parent)
     customSlider->setValue(1);
     setPageEvent(customSlider->value());
 
-    connect(customSlider, &CustomSlider::valueChanged, this, [this, setPageEvent, plaseWait](int value) {
+    connect(customSlider, &WiFi::UI::CustomSlider::valueChanged, this, [this, setPageEvent, plaseWait](int value) {
         qDebug() << "CustomSlider value changed:" << value;
         setPageEvent(value);
         if(value == 0)

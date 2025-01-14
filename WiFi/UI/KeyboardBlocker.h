@@ -7,6 +7,8 @@
 #include <QKeyEvent>
 #include <QObject>
 
+namespace WiFi::UI{
+
 class KeyboardBlocker : public QObject {
     Q_OBJECT
 
@@ -23,3 +25,5 @@ protected:
         return QObject::eventFilter(obj, event);
     }
 };
+
+}; // namespace WiFi::UI

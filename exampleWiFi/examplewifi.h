@@ -6,7 +6,7 @@
 #include "WifiScanner.h"
 #include "WifiNetworkModel.h"
 
-#include "WiFiSlider.h"
+#include "WiFi/UI/WiFiSlider.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,6 +16,8 @@ QT_END_NAMESPACE
 
 class QCheckBox;
 class WiFiSwitch;
+
+
 
 class ExampleWifi : public QWidget
 {
@@ -38,5 +40,5 @@ private:
     WifiNetworkModel model;
     WifiNetworkModel modelEmpty;
     QTableView tableView;    
-    CustomSlider *customSlider;
+    WiFi::UI::CustomSlider *customSlider;
 };
