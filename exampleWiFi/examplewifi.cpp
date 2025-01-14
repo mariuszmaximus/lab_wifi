@@ -17,7 +17,6 @@
 #include <qnamespace.h>
 #include <qslider.h>
 #include "WiFiSwitch.h"
-#include "WiFiSwitch3state.h"
 #include "KeyboardBlocker.h"
 
 ExampleWifi::ExampleWifi(QWidget *parent)

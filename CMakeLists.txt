@@ -21,19 +21,14 @@ add_library(lab_wifi
 
   WifiNetworkModel.h
   WifiNetworkModel.cpp  
-
   WiFiSwitch.cpp
   WiFiSwitch.h
-
-  WiFiSwitch3state.cpp
-  WiFiSwitch3state.h
-
+  
   customslider.cpp
   customslider.h
 
   KeyboardBlocker.cpp
   KeyboardBlocker.h
-
 )
 
 target_link_libraries(lab_wifi Qt${QT_VERSION_MAJOR}::Core  Qt${QT_VERSION_MAJOR}::Widgets)

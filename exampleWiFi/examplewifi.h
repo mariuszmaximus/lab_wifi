@@ -16,7 +16,6 @@ QT_END_NAMESPACE
 
 class QCheckBox;
 class WiFiSwitch;
-class WiFiSwitch3state;
 
 class ExampleWifi : public QWidget
 {
