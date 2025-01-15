@@ -21,7 +21,7 @@
 #include "WiFi/UI/WifiDelegate.h"
 
 
-WiFiConfig::WiFiConfig(QWidget *parent)
+WiFiConfigDialog::WiFiConfigDialog(QWidget *parent)
     : QWidget(parent)
 {
     // 
@@ -309,7 +309,7 @@ WiFiConfig::WiFiConfig(QWidget *parent)
     });
 }
 
-void WiFiConfig::showEvent(QShowEvent* event) {
+void WiFiConfigDialog::showEvent(QShowEvent* event) {
     QWidget::showEvent(event); // Wywołanie bazowej implementacji
 
     // Kod wykonywany podczas pokazywania widżetu
@@ -323,11 +323,11 @@ void WiFiConfig::showEvent(QShowEvent* event) {
     }
 }
 
-WiFiConfig::~WiFiConfig()
+WiFiConfigDialog::~WiFiConfigDialog()
 {
 }
 
-bool WiFiConfig::eventFilter(QObject* obj, QEvent* event) {
+bool WiFiConfigDialog::eventFilter(QObject* obj, QEvent* event) {
     if (obj == &tableView && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 

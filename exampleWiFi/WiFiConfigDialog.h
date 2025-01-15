@@ -9,13 +9,13 @@
 #include "WiFi/UI/WiFiSlider.h"
 
 
-class WiFiConfig : public QWidget
+class WiFiConfigDialog : public QWidget
 {
     Q_OBJECT
 
 public:
-    WiFiConfig(QWidget *parent = nullptr);
-    ~WiFiConfig();
+    WiFiConfigDialog(QWidget *parent = nullptr);
+    ~WiFiConfigDialog();
 
 protected:
     // void keyPressEvent(QKeyEvent* event) override;
