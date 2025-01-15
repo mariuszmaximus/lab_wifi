@@ -8,16 +8,6 @@
 #include "WiFi/MVC/WifiNetworkModel.h"
 #include "WiFi/UI/WiFiSlider.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class ExampleWifi;
-}
-QT_END_NAMESPACE
-
-class QCheckBox;
-class WiFiSwitch;
-
-
 
 class ExampleWifi : public QWidget
 {
@@ -34,8 +24,6 @@ protected:
     void showEvent(QShowEvent* event) override;
 
 private:
-    Ui::ExampleWifi *ui;
-
     QTableView tableView;    
 
     WiFi::WifiScanner wifiscanner;

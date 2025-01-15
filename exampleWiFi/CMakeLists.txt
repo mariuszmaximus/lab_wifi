@@ -16,7 +16,6 @@ set(PROJECT_SOURCES
         main.cpp
         examplewifi.cpp
         examplewifi.h
-        examplewifi.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

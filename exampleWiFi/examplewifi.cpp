@@ -1,5 +1,4 @@
 #include "examplewifi.h"
-#include "./ui_examplewifi.h"
 
 
 #include <QVBoxLayout>
@@ -24,10 +23,7 @@
 
 ExampleWifi::ExampleWifi(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::ExampleWifi)
 {
-    ui->setupUi(this);
-
     // 
     //  widgetTop
     //    layoutTopGrid   
@@ -329,7 +325,6 @@ void ExampleWifi::showEvent(QShowEvent* event) {
 
 ExampleWifi::~ExampleWifi()
 {
-    delete ui;
 }
 
 bool ExampleWifi::eventFilter(QObject* obj, QEvent* event) {
