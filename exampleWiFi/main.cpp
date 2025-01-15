@@ -1,4 +1,4 @@
-#include "WiFiConfig.h"
+#include "WiFiConfigDialog.h"
 
 #include <QApplication>
 
