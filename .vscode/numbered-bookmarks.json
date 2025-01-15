@@ -1,7 +1,7 @@
 {
 	"files": [
 		{
-			"path": "exampleWiFi/WiFiConfig.cpp",
+			"path": "exampleWiFi/WiFiConfigDialog.cpp",
 			"bookmarks": [
 				{
 					"line": -1,
