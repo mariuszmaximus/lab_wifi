@@ -8,6 +8,7 @@
 #include "WiFi/MVC/WifiNetworkModel.h"
 #include "WiFi/UI/WiFiSlider.h"
 
+namespace WiFi::UI {
 
 class WiFiConfigDialog : public QWidget
 {
@@ -31,3 +32,5 @@ private:
     WiFi::MVC::WifiNetworkModel modelEmpty;
     WiFi::UI::WiFiSlider *wifiSlider;
 };
+
+}; // namespace WiFi::UI

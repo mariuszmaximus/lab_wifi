@@ -20,6 +20,7 @@
 #include "WiFi/UI/KeyboardBlocker.h"
 #include "WiFi/UI/WifiDelegate.h"
 
+namespace WiFi::UI {
 
 WiFiConfigDialog::WiFiConfigDialog(QWidget *parent)
     : QWidget(parent)
@@ -365,3 +366,7 @@ bool WiFiConfigDialog::eventFilter(QObject* obj, QEvent* event) {
 
     return QWidget::eventFilter(obj, event); // Domyślne przetwarzanie
 }
+
+
+
+}; // namespace WiFi::UI
