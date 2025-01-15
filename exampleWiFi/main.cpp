@@ -5,7 +5,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    ExampleWifi w;
+    WiFiConfig w;
 #ifdef WIN32
     w.resize(1024, 768);
     w.show();
