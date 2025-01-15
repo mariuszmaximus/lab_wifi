@@ -44,7 +44,7 @@ install(TARGETS lab_wifi
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-add_subdirectory(exampleWiFi)
+add_subdirectory(example)
 
 if(WIN32)
 
